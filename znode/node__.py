@@ -45,38 +45,44 @@ class node____(tuple):
         return self[-1][0]
         
     def __mul__(self, other):
-        return self.mul1(self, other)
+        return self.ŋnp_multiply(self, other)   
         
     def __add__(self, other):
-        return self.add1(self, other)
+        return self.ŋnp_add(self, other)   
    
     def __sub__(self, other):
-        return self.sub1(self, other)
+        return self.ŋnp_subtract(self, other)   
         
     def __pow__(self, other):
-        return self.pow1(self, other)
+        return self.ŋnp_power(self, other)   
         
     def __div__(self, other):
-        return self.div1(self, other)
+        return self.ŋnp_divide(self, other)   
         
     def __mod__(self, other):
-        return self.mod1(self, other)
+        return self.ŋnp_remainder(self, other)   
         
     def __neg__(self):
-        return self.neg1(self)
-        
+        return self.ŋnp_negative(self, other)   
+
+    def __eq__(self, other):
+        return self.ŋnp_equal(self, other)   
+
+    def __ne__(self, other):
+        return self.ŋnp_not_equal(self, other)   
+
     def __gt__(self, other):
-        return self.gt1(self, other)
+        return self.ŋnp_greater(self, other)   
         
     def __lt__(self, other):
-        return self.lt1(self, other) 
+        return self.ŋnp_less(self, other)   
         
     def __ge__(self, other):
-        return self.ge1(self, other)
+        return self.ŋnp_greater_equal(self, other)   
         
     def __le__(self, other):
-        return self.le1(self, other)   
-    
+        return self.ŋnp_less_equal(self, other)   
+
 #-------------------------------------------------------    
 class node_literal__(node____):
     def __repr__(self):

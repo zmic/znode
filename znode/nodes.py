@@ -4,24 +4,24 @@ import json
 
 from .node__ import node____, node_literal__, node__, metaclass_node_apply__
 
-def in_node__(x):
+def in_node____(x):
     setattr(node____, x.__name__, x)
     return x
 
 #-------------------------------------------------------    
-@in_node__
+@in_node____
 class ŋNone(node_literal__):
     pass
 
-@in_node__
+@in_node____
 class ŋint(node_literal__):
     pass
 
-@in_node__
+@in_node____
 class ŋfloat(node_literal__):
     pass
 
-@in_node__
+@in_node____
 class ŋstr(node_literal__):
     pass
 
@@ -33,7 +33,7 @@ class ŋtuple_literal(node_literal__):
         return t  
 
 #-------------------------------------------------------  
-@in_node__
+@in_node____
 class ŋtuple(node__):
     @staticmethod
     def eval__(*args):
@@ -82,7 +82,7 @@ class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
 
 #-------------------------------------------------------  
 
-@in_node__
+@in_node____
 class ŋndtype(node__):
     def  __new__(cls, v):
         if isinstance(v, type):
@@ -134,19 +134,19 @@ class ŋnp_assign(node_numpy__):
         a[...] = i
         return a
 
-@in_node__
+@in_node____
 class ŋnp_add(metaclass=node_numpy_metaclass__):
     pass
 
-@in_node__
+@in_node____
 class ŋnp_subtract(metaclass=node_numpy_metaclass__):
     pass
 
-@in_node__
+@in_node____
 class ŋnp_multiply(metaclass=node_numpy_metaclass__):
     pass
 
-@in_node__
+@in_node____
 class ŋnp_divide(metaclass=node_numpy_metaclass__):
     pass
 
@@ -165,15 +165,17 @@ class ŋnp_reshape(metaclass=node_numpy_metaclass__):
 
 
 #-------------------------------------------------------    
-def node_wrap_function(baseclass, func):
+def node_wrap_function(baseclass, func, in_node____ = False):
     name = 'ŋ' + func.__name__
     t = type.__new__(type, name, (baseclass,), {})
     def eval__(s, o, *args):
         return func(*args)
     t.eval__ = eval__
     globals()[name] = t
+    if in_node____:
+        setattr(node____, t.__name__, t)
 
-node_wrap_function(node__, slice)
+node_wrap_function(node__, slice, in_node____ = True)
 
 #-------------------------------------------------------    
 def json_loads(json_string):

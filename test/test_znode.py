@@ -66,7 +66,8 @@ class znode_test1(unittest.TestCase):
             a = ŋnp_array([(1,2),(3,4)], np.float32)
 
         n = ŋslice(0,1,None)
-        print(n)
+        self.assertEqual(n.eval(), slice(0,1,None))
+        
         n = a.slice[1,0]
         self.assertEqual(str(n), "ŋnp_array_slice(ŋnp_array(ŋtuple_literal(([1, 2], [3, 4])), ŋndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
         self.assertEqual(n.eval(), 3)

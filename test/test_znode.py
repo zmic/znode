@@ -56,7 +56,7 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)
 
     def test0b(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal
+        from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal, ŋnp_assign, ŋslice
         a = ŋnp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)
         
@@ -64,13 +64,17 @@ class znode_test1(unittest.TestCase):
         self.reproduce(a)        
         with self.assertRaises(TypeError):
             a = ŋnp_array([(1,2),(3,4)], np.float32)
-        print(a)
-        #n = a.slice[1,0]
-        #self.assertEqual(n.eval(), 3)
-        #print(n)
-        #print(json_loads(n.json_dumps()))
-        #self.reproduce(n)        
 
+        n = ŋslice(0,1,None)
+        print(n)
+        n = a.slice[1,0]
+        self.assertEqual(str(n), "ŋnp_array_slice(ŋnp_array(ŋtuple_literal(([1, 2], [3, 4])), ŋndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
+        self.assertEqual(n.eval(), 3)
+        self.reproduce(n)      
+
+        n = a.slice[1,:]
+        self.reproduce(n)      
+    
     def test1(self):    
         from znode import ŋstandard_normal, ŋrg_MT19937, ŋintegers, ŋint, ŋtuple, json_loads
     

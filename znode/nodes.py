@@ -10,6 +10,10 @@ def in_node__(x):
 
 #-------------------------------------------------------    
 @in_node__
+class ŋNone(node_literal__):
+    pass
+
+@in_node__
 class ŋint(node_literal__):
     pass
 
@@ -94,6 +98,8 @@ class node_numpy__(node__):
     class slicer(tuple):
         def __getitem__(self, i):
             return ŋnp_array_slice(tuple.__getitem__(self, 0), i)       
+        def __setitem__(self, i, v):
+            return ŋnp_assign(ŋnp_array_slice(tuple.__getitem__(self, 0), i), v)
     @property
     def slice(self):
         return node_numpy__.slicer((self,))
@@ -122,6 +128,12 @@ class node_numpy_metaclass__(type):
         t.eval__ = eval__
         return t
         
+class ŋnp_assign(node_numpy__):
+    @staticmethod
+    def eval__(a, i):        
+        a[...] = i
+        return a
+
 @in_node__
 class ŋnp_add(metaclass=node_numpy_metaclass__):
     pass
@@ -151,6 +163,18 @@ class ŋnp_reshape(metaclass=node_numpy_metaclass__):
     pass
 
 
+
+#-------------------------------------------------------    
+def node_wrap_function(baseclass, func):
+    name = 'ŋ' + func.__name__
+    t = type.__new__(type, name, (baseclass,), {})
+    def eval__(s, o, *args):
+        return func(*args)
+    t.eval__ = eval__
+    globals()[name] = t
+
+node_wrap_function(node__, slice)
+
 #-------------------------------------------------------    
 def json_loads(json_string):
     data = json.loads(json_string)
@@ -167,5 +191,10 @@ def json_loads(json_string):
         L.append(t(*args))  
     return L[-1]
 
-    
-    
+#-------------------------------------------------------    
+__all__ = ["json_loads"]
+for x, y in list(globals().items()):
+    if isinstance(y, type):
+        if y.__name__[0] == 'ŋ':
+            __all__.append(x)
+print(__all__)

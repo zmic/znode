@@ -24,7 +24,7 @@ class node____(tuple):
         return json.dumps(self.dump())
         
     @classmethod
-    def pack_arg(cls, a):
+    def wrap_arg(cls, a):
         if isinstance(a, node____):
             return a
         if isinstance(a, int):
@@ -38,6 +38,8 @@ class node____(tuple):
         if isinstance(a, type):
             if np.issubdtype(a, np.number):
                 return cls.ŋndtype(a)
+        if a is None:
+            return cls.ŋNone(a)
         raise TypeError("Can't handle type " + type(a).__name__)
         
     @property
@@ -106,7 +108,7 @@ class node_literal__(node____):
 #-------------------------------------------------------    
 class node__(node____):
     def  __new__(cls, *args):
-        args = [cls.pack_arg(x) for x in args]
+        args = [cls.wrap_arg(x) for x in args]
         t = super().__new__(cls, args+[list()])
         return t
     def __repr__(self):
@@ -136,3 +138,11 @@ class metaclass_node_apply__(type):
         t.eval__ = eval__
         return t
 
+class metaclass_node_func__(type):
+    def __new__(cls, name, bases, attr, **kargs):
+        t = type.__new__(cls, name, bases, attr)
+        func = kwargs['f']
+        def eval__(s, o, *args):
+            return func(*args)
+        t.eval__ = eval__
+        return t

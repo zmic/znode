@@ -99,7 +99,8 @@ class node_numpy__(node__):
         return node_numpy__.slicer((self,))
         
 class ŋnp_array(node_numpy__):
-    def ŋtuple(self, *args):
+    @classmethod
+    def ŋtuple(cls, *args):
         return ŋtuple_literal(args)
     @staticmethod
     def eval__(*args):        

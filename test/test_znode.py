@@ -64,7 +64,7 @@ class znode_test1(unittest.TestCase):
         self.reproduce(a)        
         with self.assertRaises(TypeError):
             a = ŋnp_array([(1,2),(3,4)], np.float32)
-
+        print(a)
         #n = a.slice[1,0]
         #self.assertEqual(n.eval(), 3)
         #print(n)

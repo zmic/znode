@@ -22,7 +22,7 @@ class ŋstr(node_literal__):
     pass
 
 class ŋtuple_literal(node_literal__):
-    def  __new__(cls, *items):
+    def  __new__(cls, items):
         if isinstance(items, list):
             items = tuple(items)
         t = node_literal__.__new__(cls, items)
@@ -99,7 +99,8 @@ class node_numpy__(node__):
         return node_numpy__.slicer((self,))
         
 class ŋnp_array(node_numpy__):
-    ŋtuple = ŋtuple_literal
+    def ŋtuple(self, *args):
+        return ŋtuple_literal(args)
     @staticmethod
     def eval__(*args):        
         return np.array(*args)

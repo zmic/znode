@@ -97,11 +97,12 @@ class node____(tuple):
     #    raise RuntimeError()
 #-------------------------------------------------------    
 class node_literal__(node____):
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__,repr(self[0][0]))        
     def  __new__(cls, v):
         t = super().__new__(cls, ((v,),))
         return t
+    def __repr__(self):
+        return '{}({})'.format(self.__class__.__name__,repr(self[0][0]))        
+
 #-------------------------------------------------------    
 class node__(node____):
     def  __new__(cls, *args):

@@ -13,10 +13,22 @@ class znode_test1(unittest.TestCase):
             return self.assertTrue((x==y).all())
         return self.assertEqual(x, y)
 
+    def reproduce_literal(self, n): 
+        x = n.r
+        y = json_loads(n.json_dumps()).r
+        if isinstance(x, np.ndarray):
+            return self.assertTrue((x==y).all())
+        return self.assertEqual(x, y)
+
+
     def test0(self):    
         from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal
-    
+
+        n = ŋtuple()
+        x = n.eval()
+        self.assertEqual(n.eval(), ())
         n = ŋtuple(1,2,3)
+        self.assertEqual(str(n), 'ŋtuple(ŋint(1), ŋint(2), ŋint(3))')
         x = n.eval()
         self.assertEqual(n.eval(), (1,2,3))
         self.reproduce(n)
@@ -24,20 +36,27 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(n.eval(), (1, 2, (3, (), (3,))))
         self.reproduce(n)
 
-        n = ŋtuple_literal(1,2,3)
-        print(n)
+        n = ŋtuple_literal(())
+        self.assertEqual(n.r, ())
+        self.reproduce_literal(n)
+        n = ŋtuple_literal((1,2,3))
+        self.assertEqual(str(n),'ŋtuple_literal((1, 2, 3))')
         self.assertEqual(n.r, (1,2,3))
-        n2 = json_loads(n.json_dumps())
-        print(n2)
-
+        self.reproduce_literal(n)
+        #n = ŋtuple_literal((1,2,(3,(),(3,))))
+        #self.reproduce_literal(n)
 
         a = ŋint(1)
         with self.assertRaises(TypeError):
             a[0] = 1
         b = ŋint(2)
+
         n = ŋtuple(a+b,a-b)
         self.assertEqual(n.eval(), (3,-1))
+        self.reproduce(n)
 
+    def test0b(self):    
+        from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal
         a = ŋnp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)
         
@@ -46,10 +65,10 @@ class znode_test1(unittest.TestCase):
         with self.assertRaises(TypeError):
             a = ŋnp_array([(1,2),(3,4)], np.float32)
 
-        n = a.slice[1,0]
-        self.assertEqual(n.eval(), 3)
-        print(n)
-        print(json_loads(n.json_dumps()))
+        #n = a.slice[1,0]
+        #self.assertEqual(n.eval(), 3)
+        #print(n)
+        #print(json_loads(n.json_dumps()))
         #self.reproduce(n)        
 
     def test1(self):    

@@ -75,7 +75,7 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)      
 
         n = a.slice[1,:]
-        print(n)
+        print(n.eval())
         self.reproduce(n)      
     
     def test1(self):    

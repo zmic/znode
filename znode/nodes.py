@@ -2,7 +2,7 @@ import numpy as np
 import randomgen
 import json
 
-from .node__ import node____, node_literal__, node__, node_apply_metaclass__
+from .node__ import node____, node_literal__, node__, metaclass_node_apply__
 
 def in_node__(x):
     setattr(node____, x.__name__, x)
@@ -64,26 +64,19 @@ class ŋrg_MT19937(node_rg__):
 class node_random_quantity__(node__):
     pass
 
-class ŋstandard_normal(node_random_quantity__, metaclass=node_apply_metaclass__):
+class ŋstandard_normal(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
         
-class ŋintegers(node_random_quantity__, metaclass=node_apply_metaclass__):
+class ŋintegers(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋrandint(node_random_quantity__, metaclass=node_apply_metaclass__):
+class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋrandom(node_random_quantity__, metaclass=node_apply_metaclass__):
+class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 
 #-------------------------------------------------------  
-
-class ŋnp_array(node__):
-    ŋtuple = ŋtuple_literal
-    @staticmethod
-    def eval__(*args):        
-        return np.array(*args)
-
 
 @in_node__
 class ŋndtype(node__):
@@ -98,8 +91,24 @@ class ŋndtype(node__):
 
 
 class node_numpy__(node__):
-    pass
-    
+    class slicer(tuple):
+        def __getitem__(self, i):
+            return ŋnp_array_slice(tuple.__getitem__(self, 0), i)       
+    @property
+    def slice(self):
+        return node_numpy__.slicer((self,))
+        
+class ŋnp_array(node_numpy__):
+    ŋtuple = ŋtuple_literal
+    @staticmethod
+    def eval__(*args):        
+        return np.array(*args)
+
+class ŋnp_array_slice(node_numpy__):
+    @staticmethod
+    def eval__(a, i):        
+        return a[i]
+
 class node_numpy_metaclass__(type):
     def __new__(cls, name, bases, attr):
         cls = type(node_numpy__)

@@ -125,13 +125,10 @@ class node__(node____):
         
 
 #-------------------------------------------------------    
-class node_apply__(node__):
-    pass
     
-class node_apply_metaclass__(type):
+class metaclass_node_apply__(type):
     def __new__(cls, name, bases, attr):
-        cls = type(node_apply__)
-        t = cls.__new__(cls, name, node_apply__.__bases__, attr)
+        t = type.__new__(cls, name, bases, attr)
         name = name[1:]
         def eval__(s, o, *args):
             return getattr(o, name)(*args)

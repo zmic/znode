@@ -93,6 +93,8 @@ class node____(tuple):
     def __le__(self, other):
         return self.ŋnp_less_equal(self, other)   
 
+    #def __getitem__(self, *args):
+    #    raise RuntimeError()
 #-------------------------------------------------------    
 class node_literal__(node____):
     def __repr__(self):

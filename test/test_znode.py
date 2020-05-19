@@ -30,6 +30,12 @@ class znode_test1(unittest.TestCase):
 
         a = ŋnp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)
+        
+        a = ŋnp_array(([1,2],[3,4]), np.float32)
+        self.reproduce(a)
+
+        with self.assertRaises(TypeError):
+            a = ŋnp_array([(1,2),(3,4)], np.float32)
 
     def test1(self):    
         from znode import ŋstandard_normal, ŋrg_MT19937, ŋintegers, ŋint, ŋtuple, json_loads

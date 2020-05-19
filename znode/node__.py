@@ -31,10 +31,14 @@ class node____(tuple):
             return cls.ŋint(a)
         if isinstance(a, float):
             return cls.ŋfloat(a)
+        if isinstance(a, str):
+            return cls.ŋstr(a)
         if isinstance(a, tuple):
             return cls.ŋtuple(a)
-        else:
-            raise TypeError("Can't handle type " + type(a).__name__)
+        if isinstance(a, type):
+            if np.issubdtype(a, np.number):
+                return cls.ŋndtype(a)
+        raise TypeError("Can't handle type " + type(a).__name__)
         
     @property
     def r(self):

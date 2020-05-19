@@ -18,12 +18,17 @@ class ŋfloat(node_literal__):
     pass
 
 @in_node__
+class ŋstr(node_literal__):
+    pass
+
+@in_node__
 class ŋtuple(node_literal__):
     def  __new__(cls, v):
         if isinstance(v, list):
             v = tuple(v)
         t = node____.__new__(cls, ((v,),))
-        return t        
+        return t   
+
 #-------------------------------------------------------    
 class ŋadd(node__):
     @staticmethod
@@ -66,7 +71,20 @@ class ŋapply_metaclass__(type):
 class ŋstandard_normal(metaclass=ŋapply_metaclass__):
     pass
     
-#-------------------------------------------------------    
+#-------------------------------------------------------  
+
+@in_node__
+class ŋndtype(node__):
+    def  __new__(cls, v):
+        if isinstance(v, type):
+            v = v.__name__
+        t = node__.__new__(cls, v)
+        return t   
+    @staticmethod
+    def eval__(s):
+        return getattr(np, s)
+
+
 class node_numpy__(node__):
     pass
     
@@ -76,13 +94,17 @@ class node_numpy_metaclass__(type):
         t = cls.__new__(cls, name, node_numpy__.__bases__, attr)
         name = name[4:]
         f = getattr(np, name)
-        def eval__(s, o, *args):
+        def eval__(s, *args):
             return f(*args)
         t.eval__ = eval__
         return t
         
 class ŋnp_add(metaclass=node_numpy_metaclass__):
     pass
+
+class ŋnp_indices(metaclass=node_numpy_metaclass__):
+    pass
+        
     
 
 #-------------------------------------------------------    

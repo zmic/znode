@@ -2,7 +2,7 @@ import numpy as np
 import randomgen
 import json
 
-from .node__ import node____, node_literal__, node__
+from .node__ import node____, node_literal__, node__, node_apply_metaclass__
 
 def in_node__(x):
     setattr(node____, x.__name__, x)
@@ -53,22 +53,10 @@ class ŋrg_MT19937(node_rg__):
 class node_random_quantity__(node__):
     pass
 
-
-#-------------------------------------------------------    
-class node_apply__(node__):
+class ŋstandard_normal(node_random_quantity__, metaclass=node_apply_metaclass__):
     pass
-    
-class ŋapply_metaclass__(type):
-    def __new__(cls, name, bases, attr):
-        cls = type(node_apply__)
-        t = cls.__new__(cls, name, node_apply__.__bases__, attr)
-        name = name[1:]
-        def eval__(s, o, *args):
-            return getattr(o, name)(*args)
-        t.eval__ = eval__
-        return t
         
-class ŋstandard_normal(metaclass=ŋapply_metaclass__):
+class ŋintegers(node_random_quantity__, metaclass=node_apply_metaclass__):
     pass
     
 #-------------------------------------------------------  

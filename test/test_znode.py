@@ -66,6 +66,15 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)
 
     def test0b(self):    
+
+        from znode import ŋstandard_normal, ŋrg_MT19937, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal
+
+        nr = ŋrg_MT19937(1200)
+        B = ŋrandint(nr,0,8,(2,4))*np.pi/2
+    
+        n = B.slice[0][0] * 0.98        
+
+    def test0c(self):    
         from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal, ŋnp_assign, ŋslice
         a = ŋnp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)

@@ -67,6 +67,7 @@ class znode_test1(unittest.TestCase):
 
         n = ŋslice(0,1,None)
         self.assertEqual(n.eval(), slice(0,1,None))
+        self.assertEqual(str(n), 'ŋslice(ŋint(0), ŋint(1), ŋNone(None))')
         
         n = a.slice[1,0]
         self.assertEqual(str(n), "ŋnp_array_slice(ŋnp_array(ŋtuple_literal(([1, 2], [3, 4])), ŋndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
@@ -74,6 +75,7 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)      
 
         n = a.slice[1,:]
+        print(n)
         self.reproduce(n)      
     
     def test1(self):    

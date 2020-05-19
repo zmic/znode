@@ -168,7 +168,7 @@ class ŋnp_reshape(metaclass=node_numpy_metaclass__):
 def node_wrap_function(baseclass, func, in_node____ = False):
     name = 'ŋ' + func.__name__
     t = type.__new__(type, name, (baseclass,), {})
-    def eval__(s, o, *args):
+    def eval__(s, *args):
         return func(*args)
     t.eval__ = eval__
     globals()[name] = t

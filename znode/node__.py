@@ -38,8 +38,8 @@ class node____(tuple):
         if isinstance(a, type):
             if np.issubdtype(a, np.number):
                 return cls.ŋndtype(a)
-        if isinstance(a, type):
-            return cls.ŋslice(a)
+        if isinstance(a, slice):
+            return cls.ŋslice(a.start, a.stop, a.step)
         if a is None:
             return cls.ŋNone(a)
         raise TypeError("Can't handle type " + type(a).__name__)

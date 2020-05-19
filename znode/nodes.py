@@ -21,15 +21,21 @@ class ŋfloat(node_literal__):
 class ŋstr(node_literal__):
     pass
 
-@in_node__
-class ŋtuple(node_literal__):
-    def  __new__(cls, v):
-        if isinstance(v, list):
-            v = tuple(v)
-        t = node____.__new__(cls, ((v,),))
-        return t   
+class ŋtuple_literal(node_literal__):
+    def  __new__(cls, *items):
+        if isinstance(items, list):
+            items = tuple(items)
+        t = node_literal__.__new__(cls, items)
+        return t  
 
-#-------------------------------------------------------    
+#-------------------------------------------------------  
+@in_node__
+class ŋtuple(node__):
+    @staticmethod
+    def eval__(*args):
+        return args
+#-------------------------------------------------------  
+  
 class ŋadd(node__):
     @staticmethod
     def eval__(x, y):
@@ -43,6 +49,11 @@ class ŋmul(node__):
 #-------------------------------------------------------    
 class node_rg__(node__):
     pass
+
+class ŋnp_RandomState(node_rg__):
+    @staticmethod
+    def eval__(i):
+        return np.random.RandomState(i)
 
 class ŋrg_MT19937(node_rg__):
     @staticmethod
@@ -58,8 +69,21 @@ class ŋstandard_normal(node_random_quantity__, metaclass=node_apply_metaclass__
         
 class ŋintegers(node_random_quantity__, metaclass=node_apply_metaclass__):
     pass
-    
+
+class ŋrandint(node_random_quantity__, metaclass=node_apply_metaclass__):
+    pass
+
+class ŋrandom(node_random_quantity__, metaclass=node_apply_metaclass__):
+    pass
+
 #-------------------------------------------------------  
+
+class ŋnp_array(node__):
+    ŋtuple = ŋtuple_literal
+    @staticmethod
+    def eval__(*args):        
+        return np.array(*args)
+
 
 @in_node__
 class ŋndtype(node__):
@@ -87,13 +111,34 @@ class node_numpy_metaclass__(type):
         t.eval__ = eval__
         return t
         
+@in_node__
 class ŋnp_add(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node__
+class ŋnp_subtract(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node__
+class ŋnp_multiply(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node__
+class ŋnp_divide(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋnp_indices(metaclass=node_numpy_metaclass__):
     pass
         
+class ŋnp_transpose(metaclass=node_numpy_metaclass__):
+    pass
     
+class ŋnp_concatenate(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋnp_reshape(metaclass=node_numpy_metaclass__):
+    pass
+
 
 #-------------------------------------------------------    
 def json_loads(json_string):

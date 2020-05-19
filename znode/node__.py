@@ -34,7 +34,7 @@ class node____(tuple):
         if isinstance(a, str):
             return cls.ŋstr(a)
         if isinstance(a, tuple):
-            return cls.ŋtuple(a)
+            return cls.ŋtuple(*a)
         if isinstance(a, type):
             if np.issubdtype(a, np.number):
                 return cls.ŋndtype(a)
@@ -43,7 +43,13 @@ class node____(tuple):
     @property
     def r(self):
         return self[-1][0]
+
+    def __rmul__(self, other):
+        return self.ŋnp_multiply(self, other)   
         
+    def __radd__(self, other):
+        return self.ŋnp_add(self, other)   
+
     def __mul__(self, other):
         return self.ŋnp_multiply(self, other)   
         
@@ -56,8 +62,12 @@ class node____(tuple):
     def __pow__(self, other):
         return self.ŋnp_power(self, other)   
         
-    def __div__(self, other):
+    def __truediv__ (self, other):
         return self.ŋnp_divide(self, other)   
+
+    def __floordiv__ (self, other):
+        return
+        #return self.ŋnp_divide(self, other)   
         
     def __mod__(self, other):
         return self.ŋnp_remainder(self, other)   

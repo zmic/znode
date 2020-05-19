@@ -1,0 +1,11 @@
+_build
+build
+dist
+.vs
+*.egg-info
+*.pyd
+__pycache__
+*.jpg
+
+
+

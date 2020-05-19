@@ -23,6 +23,13 @@ class node____(tuple):
     def json_dumps(self):
         return json.dumps(self.dump())
         
+    class indexer(tuple):
+        def __getitem__(self, i):
+            return node____.ŋindex(tuple.__getitem__(self, 0), i)       
+    @property
+    def index(self):
+        return node____.indexer((self,))
+
     @classmethod
     def wrap_arg(cls, a):
         if isinstance(a, node____):

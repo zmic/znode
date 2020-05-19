@@ -36,6 +36,13 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(n.eval(), (1, 2, (3, (), (3,))))
         self.reproduce(n)
 
+        n = ŋtuple(1,2,3)
+        n2 = n.index[1:4]
+        self.assertEqual(n2.eval(), (2,3))
+        n3 = n2.index[-1]
+        self.assertEqual(n3.eval(), 3)
+        self.reproduce(n3)
+
         n = ŋtuple_literal(())
         self.assertEqual(n.r, ())
         self.reproduce_literal(n)
@@ -51,8 +58,11 @@ class znode_test1(unittest.TestCase):
             a[0] = 1
         b = ŋint(2)
 
-        n = ŋtuple(a+b,a-b)
-        self.assertEqual(n.eval(), (3,-1))
+        n = ŋtuple(a+b,a-b,a*b)
+        self.assertEqual(n.eval(), (3,-1, 2))
+        self.reproduce(n)
+        n = n.index[1]
+        self.assertEqual(n.eval(), -1)
         self.reproduce(n)
 
     def test0b(self):    

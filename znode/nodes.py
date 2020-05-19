@@ -38,6 +38,13 @@ class ŋtuple(node__):
     @staticmethod
     def eval__(*args):
         return args
+
+@in_node____
+class ŋindex(node__):
+    @staticmethod
+    def eval__(a, i):        
+        return a[i]
+
 #-------------------------------------------------------  
   
 class ŋadd(node__):
@@ -98,8 +105,8 @@ class node_numpy__(node__):
     class slicer(tuple):
         def __getitem__(self, i):
             return ŋnp_array_slice(tuple.__getitem__(self, 0), i)       
-        def __setitem__(self, i, v):
-            return ŋnp_assign(ŋnp_array_slice(tuple.__getitem__(self, 0), i), v)
+        #def __setitem__(self, i, v):
+        #    self.assignment = ŋnp_assign(ŋnp_array_slice(tuple.__getitem__(self, 0), i), v)
     @property
     def slice(self):
         return node_numpy__.slicer((self,))
@@ -199,4 +206,3 @@ for x, y in list(globals().items()):
     if isinstance(y, type):
         if y.__name__[0] == 'ŋ':
             __all__.append(x)
-print(__all__)

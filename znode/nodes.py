@@ -81,8 +81,8 @@ class ŋstandard_normal(node_random_quantity__, metaclass=metaclass_node_apply__
 class ŋintegers(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 
-#class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
-#    pass
+class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
+    pass
 
 class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass

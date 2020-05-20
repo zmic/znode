@@ -55,12 +55,6 @@ class node____(tuple):
     def r(self):
         return self[-1][0]
 
-    def __rmul__(self, other):
-        return self.ŋnp_multiply(self, other)   
-        
-    def __radd__(self, other):
-        return self.ŋnp_add(self, other)   
-
     def __mul__(self, other):
         return self.ŋnp_multiply(self, other)   
         
@@ -104,8 +98,32 @@ class node____(tuple):
     def __le__(self, other):
         return self.ŋnp_less_equal(self, other)   
 
+
+    def __radd__(self, other):
+        return self.ŋnp_add(self, other)   
+
+    def __rsub__(self, other):
+        return self.ŋnp_sub(self, other)   
+
+    def __rmul__(self, other):
+        return self.ŋnp_multiply(self, other)   
+    
+    def __rtruediv__(self, other):
+        return self.ŋnp_div(self, other)           
+
+
     #def __getitem__(self, *args):
     #    raise RuntimeError()
+
+    def yield_of_type(self, type):
+        for n in yield_once(self):
+            if isinstance(n, type):
+                yield n
+
+    def find_first_of_type(self, type):
+        for n in self.yield_of_type(type):
+            return n
+
 #-------------------------------------------------------    
 class node_literal__(node____):
     def  __new__(cls, v):
@@ -139,7 +157,6 @@ class node__(node____):
         
 
 #-------------------------------------------------------    
-    
 class metaclass_node_apply__(type):
     def __new__(cls, name, bases, attr):
         t = type.__new__(cls, name, bases, attr)
@@ -157,3 +174,17 @@ class metaclass_node_func__(type):
             return func(*args)
         t.eval__ = eval__
         return t
+
+#-------------------------------------------------------    
+def yield_once__(S, n):
+    nid = id(n)
+    if not nid in S:
+        yield n
+        S.add(nid)
+    for x in n[:-1]:
+        yield from yield_once__(S, x)
+
+def yield_once(n):
+    S = set()
+    yield from yield_once__(S, n)
+

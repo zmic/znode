@@ -47,16 +47,31 @@ class ŋindex(node__):
 
 #-------------------------------------------------------  
   
+@in_node____
 class ŋadd(node__):
     @staticmethod
     def eval__(x, y):
         return x + y
     
+@in_node____
 class ŋmul(node__):
     @staticmethod
     def eval__(x, y):
         return x * y
             
+@in_node____
+class ŋsub(node__):
+    @staticmethod
+    def eval__(x, y):
+        return x - y
+    
+@in_node____
+class ŋdiv(node__):
+    @staticmethod
+    def eval__(x, y):
+        return x / y
+            
+
 #-------------------------------------------------------    
 class node_rg__(node__):
     pass

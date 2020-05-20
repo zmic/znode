@@ -127,6 +127,8 @@ class node__(node____):
         else:
             return self.__class__.__name__ + repr(self[:-1])        
     def eval(self):
+        if self[-1]:
+            raise RuntimeError("Node already evaluated")
         A = self[:-1]
         for i in A:
             if not i[-1]:

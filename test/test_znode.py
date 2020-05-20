@@ -26,14 +26,19 @@ class znode_test1(unittest.TestCase):
 
         n = ŋtuple()
         x = n.eval()
-        self.assertEqual(n.eval(), ())
+        self.assertEqual(x, ())
         n = ŋtuple(1,2,3)
         self.assertEqual(str(n), 'ŋtuple(ŋint(1), ŋint(2), ŋint(3))')
         x = n.eval()
-        self.assertEqual(n.eval(), (1,2,3))
-        self.reproduce(n)
+        self.assertEqual(x, (1,2,3))
         n = ŋtuple(1,2,(3,(),(3,)))
         self.assertEqual(n.eval(), (1, 2, (3, (), (3,))))
+        
+        
+        n = ŋtuple(1,2,(3,(),(3,)))
+        self.reproduce(n)
+
+        n = ŋtuple(1,2,3,4,(5,None),None)
         self.reproduce(n)
 
         n = ŋtuple(1,2,3)
@@ -41,6 +46,7 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(n2.eval(), (2,3))
         n3 = n2.index[-1]
         self.assertEqual(n3.eval(), 3)
+        n3 = n2.index[-1]
         self.reproduce(n3)
 
         n = ŋtuple_literal(())
@@ -59,20 +65,26 @@ class znode_test1(unittest.TestCase):
         b = ŋint(2)
 
         n = ŋtuple(a+b,a-b,a*b)
-        self.assertEqual(n.eval(), (3,-1, 2))
         self.reproduce(n)
+        self.assertEqual(n.r, (3,-1, 2))
+        
+        n = ŋtuple(a+b,a-b,a*b)
         n = n.index[1]
-        self.assertEqual(n.eval(), -1)
         self.reproduce(n)
+        self.assertEqual(n.r, -1)
 
     def test0b(self):    
-
-        from znode import ŋstandard_normal, ŋrg_MT19937, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal
+        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple
 
         nr = ŋrg_MT19937(1200)
-        B = ŋrandint(nr,0,8,(2,4))*np.pi/2
-    
-        n = B.slice[0][0] * 0.98        
+        B = ŋintegers(nr,0,8,(3,4))*np.pi/2
+        n = B.slice[0,:] * 2       
+        self.reproduce(n)
+        
+        n = B.slice_assign[0,:,0]
+        self.reproduce(n)
+        self.assertEqual(n.r[0,0],0)
+
 
     def test0c(self):    
         from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal, ŋnp_assign, ŋslice
@@ -89,12 +101,13 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(str(n), 'ŋslice(ŋint(0), ŋint(1), ŋNone(None))')
         
         n = a.slice[1,0]
-        self.assertEqual(str(n), "ŋnp_array_slice(ŋnp_array(ŋtuple_literal(([1, 2], [3, 4])), ŋndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
+        self.assertEqual(str(n), "ŋnp_slice(ŋnp_array(ŋtuple_literal(([1, 2], [3, 4])), ŋndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
         self.assertEqual(n.eval(), 3)
+
+        n = a.slice[1,0]
         self.reproduce(n)      
 
         n = a.slice[1,:]
-        print(n.eval())
         self.reproduce(n)      
     
     def test1(self):    
@@ -124,10 +137,10 @@ class znode_test1(unittest.TestCase):
         from znode import ŋnp_indices, ŋndtype
 
         n = ŋnp_indices((3,4))
-        x = n.eval()
+        self.reproduce(n)
+        x = n.r
         self.assertEqual(x[0][1][1],1)
         self.assertEqual(x.shape, (2,3,4))
-        self.reproduce(n)
 
         n1 = ŋndtype(np.float32)
         self.assertEqual(str(n1),"ŋndtype(ŋstr('float32'))")
@@ -136,11 +149,11 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(str(n2),"ŋndtype(ŋstr('float32'))")
         self.reproduce(n2)
 
-        x = n1.eval()
         n = ŋnp_indices((3,4), np.float32)
         x = n.eval()
         self.assertEqual(x[1][1][3],3)
         self.assertEqual(x.dtype,np.float32)
+        n = ŋnp_indices((3,4), np.float32)
         self.reproduce(n)
 
     def test3(self):

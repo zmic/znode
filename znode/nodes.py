@@ -81,8 +81,8 @@ class ŋstandard_normal(node_random_quantity__, metaclass=metaclass_node_apply__
 class ŋintegers(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
-    pass
+#class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
+#    pass
 
 class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
@@ -102,14 +102,22 @@ class ŋndtype(node__):
 
 
 class node_numpy__(node__):
-    class slicer(tuple):
+    class slice__(tuple):
         def __getitem__(self, i):
-            return ŋnp_array_slice(tuple.__getitem__(self, 0), i)       
+            return ŋnp_slice(tuple.__getitem__(self, 0), i)       
         #def __setitem__(self, i, v):
-        #    self.assignment = ŋnp_assign(ŋnp_array_slice(tuple.__getitem__(self, 0), i), v)
+        #    self.assignment = ŋnp_assign(ŋnp_slice(tuple.__getitem__(self, 0), i), v)
     @property
     def slice(self):
-        return node_numpy__.slicer((self,))
+        return node_numpy__.slice__((self,))
+
+    class slice_assign__(tuple):
+        def __getitem__(self, i):
+            n = tuple.__getitem__(self, 0)
+            return ŋnp_assign( n, ŋnp_slice(n, i[:-1]), i[-1])
+    @property
+    def slice_assign(self):
+        return node_numpy__.slice_assign__((self,))
         
 class ŋnp_array(node_numpy__):
     @classmethod
@@ -119,7 +127,7 @@ class ŋnp_array(node_numpy__):
     def eval__(*args):        
         return np.array(*args)
 
-class ŋnp_array_slice(node_numpy__):
+class ŋnp_slice(node_numpy__):
     @staticmethod
     def eval__(a, i):        
         return a[i]
@@ -127,7 +135,7 @@ class ŋnp_array_slice(node_numpy__):
 class node_numpy_metaclass__(type):
     def __new__(cls, name, bases, attr):
         cls = type(node_numpy__)
-        t = cls.__new__(cls, name, node_numpy__.__bases__, attr)
+        t = cls.__new__(cls, name, (node_numpy__,), attr)
         name = name[4:]
         f = getattr(np, name)
         def eval__(s, *args):
@@ -137,8 +145,8 @@ class node_numpy_metaclass__(type):
         
 class ŋnp_assign(node_numpy__):
     @staticmethod
-    def eval__(a, i):        
-        a[...] = i
+    def eval__(a, b, i):  
+        b[...] = i
         return a
 
 @in_node____

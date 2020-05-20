@@ -100,13 +100,13 @@ class node____(tuple):
         return self.ŋnp_add(self, other)   
 
     def __rsub__(self, other):
-        return self.ŋnp_sub(self, other)   
+        return self.ŋnp_subtract(self, other)   
 
     def __rmul__(self, other):
         return self.ŋnp_multiply(self, other)   
     
     def __rtruediv__(self, other):
-        return self.ŋnp_div(self, other)           
+        return self.ŋnp_divide(self, other)           
 
 
     #def __getitem__(self, *args):

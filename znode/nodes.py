@@ -91,7 +91,10 @@ class node_random_quantity__(node__):
 
 class ŋstandard_normal(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
-        
+
+class ŋnormal(node_random_quantity__, metaclass=metaclass_node_apply__):
+    pass
+
 class ŋintegers(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 

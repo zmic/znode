@@ -203,6 +203,12 @@ class znode_test1(unittest.TestCase):
         n1 = ŋnp_concatenate((n1, n2), 1)
         self.reproduce(n1)
 
+    def test4(self):    
+        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple, ŋrandint, ŋnp_RandomState
+        n = ŋrg_MT19937(12)
+        n = ŋintegers(n, 0, 100)            
+        self.assertEqual(type(n.eval()), np.int64)
+
 if __name__ == '__main__':
     unittest.main()
     

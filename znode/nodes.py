@@ -114,7 +114,7 @@ class node_numpy__(node__):
     class slice_assign__(tuple):
         def __getitem__(self, i):
             n = tuple.__getitem__(self, 0)
-            return ŋnp_assign( n, ŋnp_slice(n, i[:-1]), i[-1])
+            return ŋnp_inplace_assign( n, ŋnp_slice(n, i[:-1]), i[-1])
     @property
     def slice_assign(self):
         return node_numpy__.slice_assign__((self,))
@@ -143,7 +143,7 @@ class node_numpy_metaclass__(type):
         t.eval__ = eval__
         return t
         
-class ŋnp_assign(node_numpy__):
+class ŋnp_inplace_assign(node_numpy__):
     @staticmethod
     def eval__(a, b, i):  
         b[...] = i

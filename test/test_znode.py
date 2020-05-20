@@ -222,6 +222,10 @@ class znode_test1(unittest.TestCase):
             n = ŋnormal_int(nrnd2, 3)
             n.eval()
 
+        rs = ŋnp_RandomState(4)
+        a = ŋrandint(rs, 0, 10, dtype=np.int32)
+        self.reproduce(a)
+
 
 if __name__ == '__main__':
     unittest.main()

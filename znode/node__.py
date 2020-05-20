@@ -131,8 +131,13 @@ class node_literal__(node____):
 
 #-------------------------------------------------------    
 class node__(node____):
-    def  __new__(cls, *args):
+    class kwarg(tuple):
+        def  __new__(cls, k, v):
+            t = super().__new__(cls, (k, v))
+            return t        
+    def  __new__(cls, *args, **kwargs):
         args = [cls.wrap_arg(x) for x in args]
+        args += [cls.ŋkwarg(x, cls.wrap_arg(y)) for x, y in kwargs.items()]
         t = super().__new__(cls, args+[list()])
         return t
     def __repr__(self):
@@ -154,7 +159,9 @@ class node__(node____):
             debug -= 2
         if debug:
             print(' '*debug, str(self)[:120])
-        r = self.eval__(*[i[-1][0] for i in A])
+        args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwarg)]
+        kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwarg)}
+        r = self.eval__(*args, **kwargs)
         self[-1].append(r)
         return r
         
@@ -164,8 +171,8 @@ class metaclass_node_apply__(type):
     def __new__(cls, name, bases, attr):
         t = type.__new__(cls, name, bases, attr)
         name = name[1:]
-        def eval__(s, o, *args):
-            return getattr(o, name)(*args)
+        def eval__(s, o, *args, **kwargs):
+            return getattr(o, name)(*args, **kwargs)
         t.eval__ = eval__
         return t
 
@@ -173,8 +180,8 @@ class metaclass_node_func__(type):
     def __new__(cls, name, bases, attr, **kargs):
         t = type.__new__(cls, name, bases, attr)
         func = kwargs['f']
-        def eval__(s, o, *args):
-            return func(*args)
+        def eval__(s, o, *args, **kwargs):
+            return func(*args, **kwargs)
         t.eval__ = eval__
         return t
 

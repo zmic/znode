@@ -44,6 +44,13 @@ class ŋindex(node__):
     def eval__(a, i):        
         return a[i]
 
+@in_node____
+class ŋkwarg(node__):
+    @staticmethod
+    def eval__(k, v):        
+        return node__.kwarg(k, v)
+
+
 #-------------------------------------------------------  
   
 @in_node____

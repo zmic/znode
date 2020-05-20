@@ -97,16 +97,16 @@ class node____(tuple):
 
 
     def __radd__(self, other):
-        return self.ŋnp_add(self, other)   
+        return self.ŋnp_add(other, self)   
 
     def __rsub__(self, other):
-        return self.ŋnp_subtract(self, other)   
+        return self.ŋnp_subtract(other, self)   
 
     def __rmul__(self, other):
-        return self.ŋnp_multiply(self, other)   
+        return self.ŋnp_multiply(other, self)   
     
     def __rtruediv__(self, other):
-        return self.ŋnp_divide(self, other)           
+        return self.ŋnp_divide(other, self)           
 
 
     #def __getitem__(self, *args):

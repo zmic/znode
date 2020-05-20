@@ -204,10 +204,19 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n1)
 
     def test4(self):    
-        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple, ŋrandint, ŋnp_RandomState
-        n = ŋrg_MT19937(12)
-        n = ŋintegers(n, 0, 100)            
+        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple, ŋrandint, ŋnp_RandomState, ŋnp_transpose, ŋnp_indices
+        nrnd2 = ŋrg_MT19937(12)
+        n = ŋintegers(nrnd2, 0, 100)            
         self.assertEqual(type(n.eval()), np.int64)
+
+        i = ŋintegers(nrnd2, 5, 6)
+        nxy = (1/i)
+        print(nxy.eval())
+
+        nxy = ŋnp_transpose(ŋnp_indices((i,i)), (1,2,0))
+        #print(nxy.eval())
+        nxy = (1/i)*(nxy+0.5)
+        #print(nxy.eval())
 
 if __name__ == '__main__':
     unittest.main()

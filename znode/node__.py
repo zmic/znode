@@ -141,13 +141,16 @@ class node__(node____):
            return '{}({})'.format(self.__class__.__name__,repr(self[0]))        
         else:
             return self.__class__.__name__ + repr(self[:-1])        
-    def eval(self):
+    def eval(self, debug=0):
+        if debug:
+            print(' '*debug, self)
+            debug += 1
         if self[-1]:
             raise RuntimeError("Node already evaluated")
         A = self[:-1]
         for i in A:
             if not i[-1]:
-                i.eval()
+                i.eval(debug)
         r = self.eval__(*[i[-1][0] for i in A])
         self[-1].append(r)
         return r

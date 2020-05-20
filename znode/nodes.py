@@ -235,6 +235,10 @@ class ŋnp_minimum(metaclass=node_numpy_metaclass__):
 class ŋnp_remainder(metaclass=node_numpy_metaclass__):
     pass
 
+
+class ŋnp_copy(metaclass=node_numpy_metaclass__):
+    pass
+
 class ŋnp_indices(metaclass=node_numpy_metaclass__):
     pass
         
@@ -244,10 +248,10 @@ class ŋnp_transpose(metaclass=node_numpy_metaclass__):
 class ŋnp_concatenate(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_reshape(metaclass=node_numpy_metaclass__):
+class ŋnp_dstack(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_copy(metaclass=node_numpy_metaclass__):
+class ŋnp_reshape(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋnp_ascontiguousarray(metaclass=node_numpy_metaclass__):

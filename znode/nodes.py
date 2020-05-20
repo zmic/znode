@@ -228,6 +228,10 @@ class ŋnp_maximum(metaclass=node_numpy_metaclass__):
 class ŋnp_minimum(metaclass=node_numpy_metaclass__):
     pass
 
+
+class ŋnp_remainder(metaclass=node_numpy_metaclass__):
+    pass
+
 class ŋnp_indices(metaclass=node_numpy_metaclass__):
     pass
         

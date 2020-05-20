@@ -143,7 +143,7 @@ class node__(node____):
             return self.__class__.__name__ + repr(self[:-1])        
     def eval(self, debug=0):
         if debug:
-            print(' '*debug, self)
+            print(' '*debug, str(self)[:120])
             debug += 1
         if self[-1]:
             raise RuntimeError("Node already evaluated")

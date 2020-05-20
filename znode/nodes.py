@@ -207,7 +207,11 @@ class ŋnp_concatenate(metaclass=node_numpy_metaclass__):
 class ŋnp_reshape(metaclass=node_numpy_metaclass__):
     pass
 
+class ŋnp_copy(metaclass=node_numpy_metaclass__):
+    pass
 
+class ŋnp_ascontiguousarray(metaclass=node_numpy_metaclass__):
+    pass
 
 #-------------------------------------------------------    
 def node_wrap_function(baseclass, func, in_node____ = False):

@@ -1,5 +1,4 @@
 import numpy as np
-import json
 
 def dump____(L, D, n):
     nid = id(n)
@@ -20,8 +19,6 @@ class node____(tuple):
         D = {}
         dump____(L, D, self)
         return L
-    def json_dumps(self):
-        return json.dumps(self.dump())
         
     class indexer(tuple):
         def __getitem__(self, i):

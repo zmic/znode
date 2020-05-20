@@ -1,21 +1,26 @@
-
 import unittest
 import json
 import numpy as np
-from znode import json_loads
+import znode
+
+def json_dumps(n):
+    return json.dumps(n.dump())
+
+def json_loads(s):
+    return znode.load(json.loads(s))
 
 class znode_test1(unittest.TestCase):
 
     def reproduce(self, n): 
         x = n.eval()
-        y = json_loads(n.json_dumps()).eval()
+        y = json_loads(json_dumps(n)).eval()
         if isinstance(x, np.ndarray):
             return self.assertTrue((x==y).all())
         return self.assertEqual(x, y)
 
     def reproduce_literal(self, n): 
         x = n.r
-        y = json_loads(n.json_dumps()).r
+        y = json_loads(json_dumps(n)).r
         if isinstance(x, np.ndarray):
             return self.assertTrue((x==y).all())
         return self.assertEqual(x, y)
@@ -131,7 +136,7 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)      
     
     def test1(self):    
-        from znode import ŋstandard_normal, ŋrg_MT19937, ŋintegers, ŋint, ŋtuple, json_loads
+        from znode import ŋstandard_normal, ŋrg_MT19937, ŋintegers, ŋint, ŋtuple
     
         n = ŋstandard_normal(ŋrg_MT19937(ŋint(12)),(3,4))
         x = n.eval()
@@ -142,7 +147,7 @@ class znode_test1(unittest.TestCase):
         #self.assertEqual(x, r'[["\u014bint", [12]], ["\u014brg_MT19937", [0]], ["\u014btuple", [[3, 4]]], ["\u014bstandard_normal", [1, 2]]]')
         x = json.loads(json.dumps(n.dump()))
         #self.assertEqual(x, [['ŋint', [12]], ['ŋrg_MT19937', [0]], ['ŋtuple', [[3, 4]]], ['ŋstandard_normal', [1, 2]]])
-        n2 = json_loads(n.json_dumps())
+        n2 = json_loads(json_dumps(n))
         x = n2.eval()
         self.assertAlmostEqual(x[0][0], -0.48977262 )
 

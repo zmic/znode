@@ -1,6 +1,5 @@
 import numpy as np
 import randomgen
-import json
 
 from .node__ import node____, node_literal__, node__, metaclass_node_apply__
 
@@ -242,8 +241,7 @@ def node_wrap_function(baseclass, func, in_node____ = False):
 node_wrap_function(node__, slice, in_node____ = True)
 
 #-------------------------------------------------------    
-def json_loads(json_string):
-    data = json.loads(json_string)
+def load(data):
     L = []
     G = globals()
     for type, args in data:
@@ -258,7 +256,7 @@ def json_loads(json_string):
     return L[-1]
 
 #-------------------------------------------------------    
-__all__ = ["json_loads"]
+__all__ = ["load"]
 for x, y in list(globals().items()):
     if isinstance(y, type):
         if y.__name__[0] == 'ŋ':

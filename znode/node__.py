@@ -143,7 +143,6 @@ class node__(node____):
             return self.__class__.__name__ + repr(self[:-1])        
     def eval(self, debug=0):
         if debug:
-            print(' '*debug, str(self)[:120])
             debug += 1
         if self[-1]:
             raise RuntimeError("Node already evaluated")
@@ -151,6 +150,8 @@ class node__(node____):
         for i in A:
             if not i[-1]:
                 i.eval(debug)
+        if debug:
+            print(' '*debug, str(self)[:120])
         r = self.eval__(*[i[-1][0] for i in A])
         self[-1].append(r)
         return r

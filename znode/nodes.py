@@ -87,6 +87,9 @@ class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
 class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
 
+class ŋrandn(node_random_quantity__, metaclass=metaclass_node_apply__):
+    pass
+
 #-------------------------------------------------------  
 
 @in_node____

@@ -74,7 +74,7 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(n.r, -1)
 
     def test0b(self):    
-        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple
+        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple, ŋrandint, ŋnp_RandomState
 
         nr = ŋrg_MT19937(1200)
         B = ŋintegers(nr,0,8,(3,4))*np.pi/2
@@ -90,6 +90,21 @@ class znode_test1(unittest.TestCase):
         n1 = n.astype(np.int).astype(np.float).astype('uint8')
         self.reproduce(n)
 
+        nr = ŋrg_MT19937(1201)
+        B = ŋintegers(nr,1,8,(2,4))*np.pi/2
+        B = B.slice_multiply[0,0:1,50]
+        B = B.slice_multiply[0,0:1,50]
+        B = B.slice_multiply[1,2:3,50]
+        self.reproduce(B)
+        #print(B.r)
+
+        nrnd = ŋnp_RandomState(32)
+        B = ŋrandint(nr,1,8,(2,4))*np.pi/2
+        B = B.slice_multiply[0,0:1,50]
+        B = B.slice_multiply[0,0:1,50]
+        B = B.slice_multiply[1,2:3,50]
+        #B.eval()
+        #print(B.r)
 
     def test0c(self):    
         from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal, ŋslice

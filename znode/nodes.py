@@ -82,9 +82,9 @@ class ŋnp_RandomState(node_rg__):
 
 class ŋrg_MT19937(node_rg__):
     @staticmethod
-    def eval__(i):
-        return randomgen.Generator(randomgen.MT19937(i, mode='sequence'))
-
+    def eval__(i, j = None):
+        rng = randomgen.Generator(randomgen.MT19937(i, mode='sequence'))
+        return rng
 #-------------------------------------------------------    
 class node_random_quantity__(node__):
     pass
@@ -103,6 +103,13 @@ class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
 
 class ŋrandn(node_random_quantity__, metaclass=metaclass_node_apply__):
     pass
+
+class ŋnormal_int(node_random_quantity__):
+    @staticmethod
+    def eval__(rng, loc=0.0, scale=1.0, size=None):
+        return np.round(rng.normal(loc, scale, size)).astype(int)
+
+
 
 #-------------------------------------------------------  
 
@@ -207,6 +214,18 @@ class ŋnp_multiply(metaclass=node_numpy_metaclass__):
 
 @in_node____
 class ŋnp_divide(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋnp_divide(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋnp_maximum(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋnp_minimum(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋnp_indices(metaclass=node_numpy_metaclass__):

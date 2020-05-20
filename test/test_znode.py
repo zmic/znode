@@ -85,9 +85,14 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)
         self.assertEqual(n.r[0,0],0)
 
+        n = n.astype(np.int).astype(np.float)
+        
+        n1 = n.astype(np.int).astype(np.float).astype('uint8')
+        self.reproduce(n)
+
 
     def test0c(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal, ŋnp_assign, ŋslice
+        from znode import ŋintegers, ŋint, ŋtuple, ŋnp_array, ŋtuple_literal, ŋslice
         a = ŋnp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)
         

@@ -105,20 +105,30 @@ class node_numpy__(node__):
     class slice__(tuple):
         def __getitem__(self, i):
             return ŋnp_slice(tuple.__getitem__(self, 0), i)       
-        #def __setitem__(self, i, v):
-        #    self.assignment = ŋnp_assign(ŋnp_slice(tuple.__getitem__(self, 0), i), v)
     @property
     def slice(self):
         return node_numpy__.slice__((self,))
 
-    class slice_assign__(tuple):
+    class slicer_inplace_operation__(tuple):
         def __getitem__(self, i):
-            n = tuple.__getitem__(self, 0)
-            return ŋnp_inplace_assign( n, ŋnp_slice(n, i[:-1]), i[-1])
+            operation, n = self
+            #n = tuple.__getitem__(self, 1)
+            return operation( n, ŋnp_slice(n, i[:-1]), i[-1])
     @property
     def slice_assign(self):
-        return node_numpy__.slice_assign__((self,))
-        
+        return node_numpy__.slicer_inplace_operation__((ŋnp_inplace_assign, self))
+    @property
+    def slice_multiply(self):
+        return node_numpy__.slicer_inplace_operation__((ŋnp_inplace_multiply, self))
+    @property
+    def slice_add(self):
+        return node_numpy__.slicer_inplace_operation__((ŋnp_inplace_add, self))
+    
+    def astype(self, ndtype):
+        return ŋnp_astype(self, ndtype)
+
+
+
 class ŋnp_array(node_numpy__):
     @classmethod
     def ŋtuple(cls, *args):
@@ -148,6 +158,23 @@ class ŋnp_inplace_assign(node_numpy__):
     def eval__(a, b, i):  
         b[...] = i
         return a
+
+class ŋnp_inplace_multiply(node_numpy__):
+    @staticmethod
+    def eval__(a, b, i):  
+        b[...] *= i
+        return a
+
+class ŋnp_inplace_add(node_numpy__):
+    @staticmethod
+    def eval__(a, b, i):  
+        b[...] += i
+        return a
+
+class ŋnp_astype(node_numpy__):
+    @staticmethod
+    def eval__(a, dtype):  
+        return a.astype(dtype)
 
 @in_node____
 class ŋnp_add(metaclass=node_numpy_metaclass__):

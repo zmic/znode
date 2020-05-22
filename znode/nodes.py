@@ -13,6 +13,10 @@ class ŋNone(node_literal__):
     pass
 
 @in_node____
+class ŋbool(node_literal__):
+    pass
+
+@in_node____
 class ŋint(node_literal__):
     pass
 
@@ -209,6 +213,8 @@ class ŋnp_astype(node_numpy__):
     @staticmethod
     def eval__(a, dtype):  
         return a.astype(dtype)
+        
+#------------------------------------------------------------
 
 @in_node____
 class ŋnp_add(metaclass=node_numpy_metaclass__):
@@ -227,7 +233,65 @@ class ŋnp_divide(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
-class ŋnp_divide(metaclass=node_numpy_metaclass__):
+class ŋnp_remainder(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_negative(metaclass=node_numpy_metaclass__):
+    pass
+    
+#------------------------------------------------------------
+    
+@in_node____
+class ŋnp_equal(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_not_equal(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_greater(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_less(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_greater_equal(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_less_equal(metaclass=node_numpy_metaclass__):
+    pass
+
+#------------------------------------------------------------
+
+@in_node____
+class ŋnp_sin(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋnp_cos(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋnp_tan(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋnp_exp(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋnp_log(metaclass=node_numpy_metaclass__):
+    pass
+    
+#------------------------------------------------------------
+
+@in_node____
+class ŋnp_abs(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
@@ -238,17 +302,21 @@ class ŋnp_maximum(metaclass=node_numpy_metaclass__):
 class ŋnp_minimum(metaclass=node_numpy_metaclass__):
     pass
 
-
 class ŋnp_remainder(metaclass=node_numpy_metaclass__):
-    pass
-
-
-class ŋnp_copy(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋnp_indices(metaclass=node_numpy_metaclass__):
     pass
-        
+
+class ŋnp_copy(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋnp_where(metaclass=node_numpy_metaclass__):
+    pass
+    
+class ŋnp_isnan(metaclass=node_numpy_metaclass__):
+    pass
+            
 class ŋnp_transpose(metaclass=node_numpy_metaclass__):
     pass
     
@@ -264,6 +332,18 @@ class ŋnp_reshape(metaclass=node_numpy_metaclass__):
 class ŋnp_ascontiguousarray(metaclass=node_numpy_metaclass__):
     pass
 
+#-------------------------------------------------------    
+
+class ŋcanvas(node_numpy__):
+    @staticmethod
+    def eval__(X, Y, x0, x1, y0, y1, endpoint, dtype):
+        I = np.indices((Y,X))
+        f = (y1 - y0) / (Y - 1) if endpoint else (y1 - y0) / Y
+        I[0] = x0 + f*I[0]
+        f = (x1 - x0) / (X - 1) if endpoint else (x1 - x0) / X
+        I[1] = x0 + f*I[1]
+        return I.astype(dtype)
+        
 #-------------------------------------------------------    
 def node_wrap_function(baseclass, func, in_node____ = False):
     name = 'ŋ' + func.__name__

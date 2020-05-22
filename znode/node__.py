@@ -31,6 +31,8 @@ class node____(tuple):
     def wrap_arg(cls, a):
         if isinstance(a, node____):
             return a
+        if isinstance(a, bool):
+            return cls.ŋbool(a)
         if isinstance(a, int):
             return cls.ŋint(a)
         if isinstance(a, float):

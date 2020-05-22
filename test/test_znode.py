@@ -226,6 +226,12 @@ class znode_test1(unittest.TestCase):
         a = ŋrandint(rs, 0, 10, dtype=np.int32)
         self.reproduce(a)
 
+    def test5(self):
+        L = [['ŋint', [800]], ['ŋint', [800]], ['ŋfloat', [-14.24099368720711]], ['ŋfloat', [14.24099368720711]], ['ŋfloat', [-14.24099368720711]], ['ŋfloat', [14.24099368720711]], ['ŋbool', [False]], ['ŋstr', ['dtype']], ['ŋstr', ['float64']], ['ŋndtype', [8]], ['ŋkwarg', [7, 9]], ['ŋcanvas', [0, 1, 2, 3, 4, 5, 6, 10]], ['ŋint', [0]], ['ŋnp_slice', [11, 12]], ['ŋnp_tan', [13]], ['ŋstr', ['int64']], ['ŋndtype', [15]], ['ŋnp_astype', [14, 16]], ['ŋint', [1]], ['ŋint', [1]], ['ŋnp_slice', [11, 19]], ['ŋnp_tan', [20]], ['ŋstr', ['int64']], ['ŋndtype', [22]], ['ŋnp_astype', [21, 23]], ['ŋnp_abs', [24]], ['ŋnp_add', [18, 25]], ['ŋnp_remainder', [17, 26]], ['ŋstr', ['float64']], ['ŋndtype', [28]], ['ŋnp_astype', [27, 29]], ['ŋint', [1]], ['ŋnp_slice', [11, 31]], ['ŋstr', ['int64']], ['ŋndtype', [33]], ['ŋnp_astype', [32, 34]], ['ŋint', [1]], ['ŋstr', ['int64']], ['ŋndtype', [37]], ['ŋnp_astype', [14, 38]], ['ŋnp_abs', [39]], ['ŋnp_add', [36, 40]], ['ŋnp_remainder', [35, 41]], ['ŋstr', ['float64']], ['ŋndtype', [43]], ['ŋnp_astype', [42, 44]], ['ŋnp_exp', [21]], ['ŋnp_multiply', [45, 46]], ['ŋnp_sin', [47]], ['ŋnp_add', [30, 48]], ['ŋnp_add', [49, 45]], ['ŋnp_sin', [50]], ['ŋnp_isnan', [51]], ['ŋfloat', [0.0]], ['ŋnp_where', [52, 53, 51]], ['ŋfloat', [-1e+300]], ['ŋnp_minimum', [54, 55]], ['ŋfloat', [1e+300]], ['ŋnp_maximum', [56, 57]], ['ŋnp_min', [58]], ['ŋnp_max', [58]], ['ŋtuple', [58, 59, 60]]]
+        from znode import load
+        n = load(L)
+        K = n.eval_symbolic()
+
 
 if __name__ == '__main__':
     unittest.main()

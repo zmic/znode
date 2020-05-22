@@ -1,4 +1,5 @@
 import numpy as np
+from collections import defaultdict
 
 def dump____(L, D, n):
     nid = id(n)
@@ -159,13 +160,54 @@ class node__(node____):
                 i.eval(debug)
         if debug:
             debug -= 2
-        if debug:
             print(' '*debug, str(self)[:120])
         args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwarg)]
         kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwarg)}
         r = self.eval__(*args, **kwargs)
         self[-1].append(r)
         return r
+    def eval_symbolic____(self, args, kwargs):
+        args = ', '.join([str(a) for a in args])
+        kwargs = ', '.join([ '%s=%s'%(k,v) for k, v in kwargs.items()])
+        if args and kwargs:
+            args += ', '
+        r = '{}({}{})'.format(self.__class__.__name__, args, kwargs)
+        return r            
+    def eval_symbolic__(self, usage_count, round, debug, already_visited):
+        if debug:
+            debug += 2
+        A = self[:-1]
+        for i in A:
+            if not isinstance(i, node_literal__):
+                if not id(i) in already_visited:
+                    already_visited.add(id(i))
+                    s = i.eval_symbolic__(usage_count, round, debug, already_visited)
+        if debug:
+            debug -= 2
+        if round == 0:
+            for i in A:
+                usage_count[id(i)] += 1
+        elif round == 1:
+            if not self[-1]:
+                args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwarg)]
+                kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwarg)}
+                r = self.eval_symbolic____(args, kwargs)
+                if usage_count[id(self)] > 1 or len(r) > 40:
+                    x_count = usage_count['x_count']            
+                    usage_count['x_count'] += 1
+                    variable = 'x{}'.format(x_count)
+                    usage_count['L'] += ['{} = {}'.format(variable, r)]
+                    r = variable
+                self[-1].append(r)            
+                #print(' '*debug, str(self)[:120])
+    def eval_symbolic(self, debug=0):
+        lines = []
+        usage_count = defaultdict(int)
+        usage_count['L'] = lines
+        self.eval_symbolic__(usage_count, 0, debug, set())
+        self.eval_symbolic__(usage_count, 1, debug, set())
+        return lines
+
         
 
 #-------------------------------------------------------    

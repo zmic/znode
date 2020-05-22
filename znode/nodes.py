@@ -290,22 +290,34 @@ class ŋnp_log(metaclass=node_numpy_metaclass__):
     
 #------------------------------------------------------------
 
-@in_node____
 class ŋnp_abs(metaclass=node_numpy_metaclass__):
     pass
 
-@in_node____
+class ŋnp_max(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋnp_min(metaclass=node_numpy_metaclass__):
+    pass
+
 class ŋnp_maximum(metaclass=node_numpy_metaclass__):
     pass
 
-@in_node____
 class ŋnp_minimum(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_remainder(metaclass=node_numpy_metaclass__):
+class ŋnp_isnan(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋnp_indices(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋnp_repeat(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋnp_digitize(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋnp_take(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋnp_copy(metaclass=node_numpy_metaclass__):
@@ -313,10 +325,7 @@ class ŋnp_copy(metaclass=node_numpy_metaclass__):
 
 class ŋnp_where(metaclass=node_numpy_metaclass__):
     pass
-    
-class ŋnp_isnan(metaclass=node_numpy_metaclass__):
-    pass
-            
+                
 class ŋnp_transpose(metaclass=node_numpy_metaclass__):
     pass
     

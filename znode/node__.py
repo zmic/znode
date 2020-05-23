@@ -166,12 +166,21 @@ class node__(node____):
         r = self.eval__(*args, **kwargs)
         self[-1].append(r)
         return r
-    def eval_symbolic____(self, args, kwargs):
+    @staticmethod
+    def eval_symbolic_packargs(args, kwargs):
         args = ', '.join([str(a) for a in args])
         kwargs = ', '.join([ '%s=%s'%(k,v) for k, v in kwargs.items()])
         if args and kwargs:
             args += ', '
-        r = '{}({}{})'.format(self.__class__.__name__, args, kwargs)
+        return args + kwargs
+    @classmethod
+    def eval_symbolic____(cls, *args, **kwargs):
+        args = cls.eval_symbolic_packargs(args, kwargs)
+        try:
+            symbolic_name = cls.symbolic_name
+        except AttributeError:
+            symbolic_name = cls.__name__
+        r = '{}({})'.format(symbolic_name, args)
         return r            
     def eval_symbolic__(self, usage_count, round, debug, already_visited):
         if debug:
@@ -191,8 +200,8 @@ class node__(node____):
             if not self[-1]:
                 args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwarg)]
                 kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwarg)}
-                r = self.eval_symbolic____(args, kwargs)
-                if usage_count[id(self)] > 1 or len(r) > 40:
+                r = self.eval_symbolic____(*args, **kwargs)
+                if usage_count[id(self)] > 1 or len(r) > 60:
                     x_count = usage_count['x_count']            
                     usage_count['x_count'] += 1
                     variable = 'x{}'.format(x_count)
@@ -217,7 +226,12 @@ class metaclass_node_apply__(type):
         name = name[1:]
         def eval__(s, o, *args, **kwargs):
             return getattr(o, name)(*args, **kwargs)
-        t.eval__ = eval__
+        t.eval__ = eval__ 
+        def eval_symbolic____(cls, o, *args, **kwargs):
+            args = cls.eval_symbolic_packargs(args, kwargs)
+            r = '{}.{}({})'.format(o, name, args)
+            return r                    
+        t.eval_symbolic____ = eval_symbolic____
         return t
 
 class metaclass_node_func__(type):

@@ -213,7 +213,11 @@ class ŋnp_astype(node_numpy__):
     @staticmethod
     def eval__(a, dtype):  
         return a.astype(dtype)
-        
+    @classmethod
+    def eval_symbolic____(cls, o, *args, **kwargs):
+        args = cls.eval_symbolic_packargs(args, kwargs)
+        r = '{}.astype({})'.format(o, args)
+        return r           
 #------------------------------------------------------------
 
 @in_node____

@@ -38,6 +38,8 @@ class node____(tuple):
             return cls.ŋint(a)
         if isinstance(a, float):
             return cls.ŋfloat(a)
+        if isinstance(a, complex):
+            return cls.ŋcomplex(a)
         if isinstance(a, str):
             return cls.ŋstr(a)
         if isinstance(a, tuple):

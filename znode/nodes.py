@@ -25,6 +25,10 @@ class ŋfloat(node_literal__):
     pass
 
 @in_node____
+class ŋcomplex(node_literal__):
+    pass
+
+@in_node____
 class ŋstr(node_literal__):
     pass
 
@@ -85,7 +89,6 @@ class ŋdiv(node__):
     def eval__(x, y):
         return x / y
             
-
 #-------------------------------------------------------    
 class node_rg__(node__):
     pass
@@ -242,18 +245,20 @@ class ŋp_astype(node_numpy__):
 class ŋp_add(metaclass=node_numpy_metaclass__):
     @classmethod
     def eval_symbolic____(cls, a, b):
-        r = '{} + {}'.format(a, b)
+        r = '({} + {})'.format(a, b)
         return r           
 
 @in_node____
 class ŋp_subtract(metaclass=node_numpy_metaclass__):
-    pass
-
+    @classmethod
+    def eval_symbolic____(cls, a, b):
+        r = '({} - {})'.format(a, b)
+        return r    
 @in_node____
 class ŋp_multiply(metaclass=node_numpy_metaclass__):
     @classmethod
     def eval_symbolic____(cls, a, b):
-        r = '{} * {}'.format(a, b)
+        r = '({} * {})'.format(a, b)
         return r     
 
 @in_node____
@@ -270,6 +275,10 @@ class ŋp_remainder(metaclass=node_numpy_metaclass__):
     
 @in_node____
 class ŋp_negative(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋp_square(metaclass=node_numpy_metaclass__):
     pass
 
 #------------------------------------------------------------
@@ -313,6 +322,30 @@ class ŋp_tan(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
+class ŋp_arcsin(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_arccos(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋp_arctan(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋp_sinh(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_cosh(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋp_tanh(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
 class ŋp_exp(metaclass=node_numpy_metaclass__):
     pass
 
@@ -326,6 +359,12 @@ class ŋp_fmod(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋp_abs(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_floor(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_ceil(metaclass=node_numpy_metaclass__):
     pass
 
 class ŋp_max(metaclass=node_numpy_metaclass__):

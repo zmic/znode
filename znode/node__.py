@@ -44,7 +44,7 @@ class node____(tuple):
             return cls.ŋtuple(*a)
         if isinstance(a, type):
             if np.issubdtype(a, np.number):
-                return cls.ŋndtype(a)
+                return cls.ŋp_ndtype(a)
         if isinstance(a, slice):
             return cls.ŋslice(a.start, a.stop, a.step)
         if a is None:

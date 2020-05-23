@@ -128,7 +128,7 @@ class ŋnormal_int(node_random_quantity__):
 #-------------------------------------------------------  
 
 @in_node____
-class ŋndtype(node__):
+class ŋp_ndtype(node__):
     def  __new__(cls, v):
         if isinstance(v, type):
             v = v.__name__

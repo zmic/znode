@@ -227,10 +227,33 @@ class znode_test1(unittest.TestCase):
         self.reproduce(a)
 
     def test5(self):
-        L = [['ŋint', [800]], ['ŋint', [800]], ['ŋfloat', [-14.24099368720711]], ['ŋfloat', [14.24099368720711]], ['ŋfloat', [-14.24099368720711]], ['ŋfloat', [14.24099368720711]], ['ŋbool', [False]], ['ŋstr', ['dtype']], ['ŋstr', ['float64']], ['ŋp_ndtype', [8]], ['ŋkwarg', [7, 9]], ['ŋcanvas', [0, 1, 2, 3, 4, 5, 6, 10]], ['ŋint', [0]], ['ŋp_slice', [11, 12]], ['ŋp_tan', [13]], ['ŋstr', ['int64']], ['ŋp_ndtype', [15]], ['ŋp_astype', [14, 16]], ['ŋint', [1]], ['ŋint', [1]], ['ŋp_slice', [11, 19]], ['ŋp_tan', [20]], ['ŋstr', ['int64']], ['ŋp_ndtype', [22]], ['ŋp_astype', [21, 23]], ['ŋp_abs', [24]], ['ŋp_add', [18, 25]], ['ŋp_remainder', [17, 26]], ['ŋstr', ['float64']], ['ŋp_ndtype', [28]], ['ŋp_astype', [27, 29]], ['ŋint', [1]], ['ŋp_slice', [11, 31]], ['ŋstr', ['int64']], ['ŋp_ndtype', [33]], ['ŋp_astype', [32, 34]], ['ŋint', [1]], ['ŋstr', ['int64']], ['ŋp_ndtype', [37]], ['ŋp_astype', [14, 38]], ['ŋp_abs', [39]], ['ŋp_add', [36, 40]], ['ŋp_remainder', [35, 41]], ['ŋstr', ['float64']], ['ŋp_ndtype', [43]], ['ŋp_astype', [42, 44]], ['ŋp_exp', [21]], ['ŋp_multiply', [45, 46]], ['ŋp_sin', [47]], ['ŋp_add', [30, 48]], ['ŋp_add', [49, 45]], ['ŋp_sin', [50]], ['ŋp_isnan', [51]], ['ŋfloat', [0.0]], ['ŋp_where', [52, 53, 51]], ['ŋfloat', [-1e+300]], ['ŋp_minimum', [54, 55]], ['ŋfloat', [1e+300]], ['ŋp_maximum', [56, 57]], ['ŋp_min', [58]], ['ŋp_max', [58]], ['ŋtuple', [58, 59, 60]]]
-        from znode import load
+        L = [['ŋint', [800]], ['ŋint', [800]], ['ŋfloat', [-14.24099368720711]], ['ŋfloat', [14.24099368720711]], 
+        ['ŋfloat', [-14.24099368720711]], ['ŋfloat', [14.24099368720711]], ['ŋbool', [False]], ['ŋstr', ['dtype']], ['ŋstr', ['float64']], 
+        ['ŋp_ndtype', [8]], ['ŋkwarg', [7, 9]], ['ŋcanvas', [0, 1, 2, 3, 4, 5, 6, 10]], ['ŋint', [0]], 
+        ['ŋp_slice', [11, 12]], ['ŋp_tan', [13]], ['ŋstr', ['int64']], ['ŋp_ndtype', [15]], ['ŋp_astype', [14, 16]], ['ŋint', [1]], 
+        ['ŋint', [1]], ['ŋp_slice', [11, 19]], ['ŋp_tan', [20]], ['ŋstr', ['int64']], ['ŋp_ndtype', [22]], ['ŋp_astype', [21, 23]], 
+        ['ŋp_abs', [24]], ['ŋp_add', [18, 25]], ['ŋp_remainder', [17, 26]], ['ŋstr', ['float64']], ['ŋp_ndtype', [28]], 
+        ['ŋp_astype', [27, 29]], ['ŋint', [1]], ['ŋp_slice', [11, 31]], ['ŋstr', ['int64']], ['ŋp_ndtype', [33]], ['ŋp_astype', [32, 34]], 
+        ['ŋint', [1]], ['ŋstr', ['int64']], ['ŋp_ndtype', [37]], ['ŋp_astype', [14, 38]], ['ŋp_abs', [39]], ['ŋp_add', [36, 40]], 
+        ['ŋp_remainder', [35, 41]], ['ŋstr', ['float64']], ['ŋp_ndtype', [43]], ['ŋp_astype', [42, 44]], ['ŋp_exp', [21]], 
+        ['ŋp_multiply', [45, 46]], ['ŋp_sin', [47]], ['ŋp_add', [30, 48]], ['ŋp_add', [49, 45]], ['ŋp_sin', [50]], ['ŋp_isnan', [51]], 
+        ['ŋfloat', [0.0]], ['ŋp_where', [52, 53, 51]], ['ŋfloat', [-1e+300]], ['ŋp_minimum', [54, 55]], ['ŋfloat', [1e+300]], 
+        ['ŋp_maximum', [56, 57]], ['ŋp_min', [58]], ['ŋp_max', [58]], ['ŋtuple', [58, 59, 60]]]
+
+        from znode import load, ŋtuple_literal
+        from znode.core import node__
+        from znode.extra import ŋcanvas
         n = load(L)
+        class extra(node__):
+            pass
+        n = extra(n)
         K = n.eval_symbolic()
+        n = extra(())  # extra(ŋtuple())        
+        n = extra(((),()))  # extra(ŋtuple(ŋtuple(), ŋtuple()))       
+        n = extra(ŋtuple_literal(([],[])))
+
+
+
 
 
 if __name__ == '__main__':

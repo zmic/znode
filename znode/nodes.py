@@ -52,7 +52,11 @@ class ŋindex(node__):
 class ŋkwarg(node__):
     @staticmethod
     def eval__(k, v):        
-        return node__.kwarg(k, v)
+        return node__.kwargx(k, v)
+    @classmethod
+    def eval_symbolic____(cls, k, v):
+        r = '{}={}'.format(k, v)
+        return r   
 
 
 #-------------------------------------------------------  
@@ -137,7 +141,10 @@ class ŋp_ndtype(node__):
     @staticmethod
     def eval__(s):
         return getattr(np, s)
-
+    @classmethod
+    def eval_symbolic____(cls, a):
+        r = 'np.{}'.format(a)
+        return r   
 
 class node_numpy__(node__):
     class slice__(tuple):
@@ -162,8 +169,7 @@ class node_numpy__(node__):
     def slice_add(self):
         return node_numpy__.slicer_inplace_operation__((ŋp_inplace_add, self))
     
-    def astype(self, ndtype):
-        return ŋp_astype(self, ndtype)
+
 
 
 
@@ -179,6 +185,10 @@ class ŋp_slice(node_numpy__):
     @staticmethod
     def eval__(a, i):        
         return a[i]
+    def eval_symbolic____(cls, o, *args, **kwargs):
+        args = cls.eval_symbolic_packargs(args, kwargs)
+        r = '{}[{}]'.format(o, args)
+        return r   
 
 class node_numpy_metaclass__(type):
     def __new__(cls, name, bases, attr):
@@ -189,6 +199,12 @@ class node_numpy_metaclass__(type):
         def eval__(s, *args):
             return f(*args)
         t.eval__ = eval__
+        def eval_symbolic____(cls, *args, **kwargs):
+            args = cls.eval_symbolic_packargs(args, kwargs)
+            r = 'np.{}({})'.format(name, args)
+            return r                    
+        t.eval_symbolic____ = eval_symbolic____
+        return t        
         return t
         
 class ŋp_inplace_assign(node_numpy__):
@@ -209,6 +225,7 @@ class ŋp_inplace_add(node_numpy__):
         b[...] += i
         return a
 
+@in_node____
 class ŋp_astype(node_numpy__):
     @staticmethod
     def eval__(a, dtype):  
@@ -237,13 +254,17 @@ class ŋp_divide(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
+class ŋp_mod(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
 class ŋp_remainder(metaclass=node_numpy_metaclass__):
     pass
     
 @in_node____
 class ŋp_negative(metaclass=node_numpy_metaclass__):
     pass
-    
+
 #------------------------------------------------------------
     
 @in_node____
@@ -293,6 +314,9 @@ class ŋp_log(metaclass=node_numpy_metaclass__):
     pass
     
 #------------------------------------------------------------
+
+class ŋp_fmod(metaclass=node_numpy_metaclass__):
+    pass
 
 class ŋp_abs(metaclass=node_numpy_metaclass__):
     pass
@@ -346,18 +370,6 @@ class ŋp_ascontiguousarray(metaclass=node_numpy_metaclass__):
     pass
 
 #-------------------------------------------------------    
-
-class ŋcanvas(node_numpy__):
-    @staticmethod
-    def eval__(X, Y, x0, x1, y0, y1, endpoint, dtype):
-        I = np.indices((Y,X))
-        f = (y1 - y0) / (Y - 1) if endpoint else (y1 - y0) / Y
-        I[0] = x0 + f*I[0]
-        f = (x1 - x0) / (X - 1) if endpoint else (x1 - x0) / X
-        I[1] = x0 + f*I[1]
-        return I.astype(dtype)
-        
-#-------------------------------------------------------    
 def node_wrap_function(baseclass, func, in_node____ = False):
     name = 'ŋ' + func.__name__
     t = type.__new__(type, name, (baseclass,), {})
@@ -371,11 +383,11 @@ def node_wrap_function(baseclass, func, in_node____ = False):
 node_wrap_function(node__, slice, in_node____ = True)
 
 #-------------------------------------------------------    
+node_dict = {}
 def load(data):
     L = []
-    G = globals()
     for type, args in data:
-        t = G[type]
+        t = node_dict[type]
         if issubclass(t, node__):
             args = [L[x] for x in args]
         elif issubclass(t, node_literal__):
@@ -386,8 +398,11 @@ def load(data):
     return L[-1]
 
 #-------------------------------------------------------    
-__all__ = ["load"]
+
+__all__ = ["load", "node_dict"]
 for x, y in list(globals().items()):
     if isinstance(y, type):
         if y.__name__[0] == 'ŋ':
             __all__.append(x)
+            node_dict[x] = y
+

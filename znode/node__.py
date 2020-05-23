@@ -75,7 +75,7 @@ class node____(tuple):
         #return self.ŋp_divide(self, other)   
         
     def __mod__(self, other):
-        return self.ŋp_remainder(self, other)   
+        return self.ŋp_mod(self, other)   
         
     def __neg__(self):
         return self.ŋp_negative(self, other)   
@@ -134,7 +134,10 @@ class node_literal__(node____):
 
 #-------------------------------------------------------    
 class node__(node____):
-    class kwarg(tuple):
+    symbolic_name = None
+    symbolic_standalone = False
+    symbolic_standalone_arguments = False
+    class kwargx(tuple):
         def  __new__(cls, k, v):
             t = super().__new__(cls, (k, v))
             return t        
@@ -161,8 +164,8 @@ class node__(node____):
         if debug:
             debug -= 2
             print(' '*debug, str(self)[:120])
-        args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwarg)]
-        kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwarg)}
+        args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwargx)]
+        kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwargx)}
         r = self.eval__(*args, **kwargs)
         self[-1].append(r)
         return r
@@ -176,10 +179,7 @@ class node__(node____):
     @classmethod
     def eval_symbolic____(cls, *args, **kwargs):
         args = cls.eval_symbolic_packargs(args, kwargs)
-        try:
-            symbolic_name = cls.symbolic_name
-        except AttributeError:
-            symbolic_name = cls.__name__
+        symbolic_name = cls.symbolic_name or cls.__name__
         r = '{}({})'.format(symbolic_name, args)
         return r            
     def eval_symbolic__(self, usage_count, round, debug, already_visited):
@@ -194,14 +194,16 @@ class node__(node____):
         if debug:
             debug -= 2
         if round == 0:
+            if self.symbolic_standalone_arguments:
+                for i in A:
+                    i.symbolic_standalone = True                    
             for i in A:
                 usage_count[id(i)] += 1
         elif round == 1:
             if not self[-1]:
-                args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwarg)]
-                kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwarg)}
-                r = self.eval_symbolic____(*args, **kwargs)
-                if usage_count[id(self)] > 1 or len(r) > 60:
+                args = [i[-1][0] for i in A]
+                r = self.eval_symbolic____(*args, **{})
+                if self.symbolic_standalone or usage_count[id(self)] != 1 or (len(r) > 60 and self.ŋp_astype != type(self)):
                     x_count = usage_count['x_count']            
                     usage_count['x_count'] += 1
                     variable = 'x{}'.format(x_count)
@@ -216,7 +218,8 @@ class node__(node____):
         self.eval_symbolic__(usage_count, 0, debug, set())
         self.eval_symbolic__(usage_count, 1, debug, set())
         return lines
-
+    def astype(self, ndtype):
+        return self.ŋp_astype(self, ndtype)
         
 
 #-------------------------------------------------------    

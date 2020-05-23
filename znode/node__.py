@@ -135,8 +135,8 @@ class node_literal__(node____):
 #-------------------------------------------------------    
 class node__(node____):
     symbolic_name = None
-    symbolic_standalone = False
-    symbolic_standalone_arguments = False
+    symbolic_standalone = None
+    symbolic_standalone_arguments = None
     class kwargx(tuple):
         def  __new__(cls, k, v):
             t = super().__new__(cls, (k, v))
@@ -194,19 +194,19 @@ class node__(node____):
         if debug:
             debug -= 2
         if round == 0:
-            if self.symbolic_standalone_arguments:
+            if self.symbolic_standalone_arguments != None:
                 for i in A:
-                    i.symbolic_standalone = True                    
+                    i.symbolic_standalone = self.symbolic_standalone_arguments                    
             for i in A:
                 usage_count[id(i)] += 1
         elif round == 1:
             if not self[-1]:
                 args = [i[-1][0] for i in A]
                 r = self.eval_symbolic____(*args, **{})
-                if self.symbolic_standalone or usage_count[id(self)] != 1 or (len(r) > 60 and self.ŋp_astype != type(self)):
+                if (self.symbolic_standalone==1) or (usage_count[id(self)] != 1) or (len(r) > 60 and self.symbolic_standalone!=0):
                     x_count = usage_count['x_count']            
                     usage_count['x_count'] += 1
-                    variable = 'x{}'.format(x_count)
+                    variable = 'r{}'.format(x_count)
                     usage_count['L'] += ['{} = {}'.format(variable, r)]
                     r = variable
                 self[-1].append(r)            

@@ -199,11 +199,12 @@ class node_numpy_metaclass__(type):
         def eval__(s, *args):
             return f(*args)
         t.eval__ = eval__
-        def eval_symbolic____(cls, *args, **kwargs):
-            args = cls.eval_symbolic_packargs(args, kwargs)
-            r = 'np.{}({})'.format(name, args)
-            return r                    
-        t.eval_symbolic____ = eval_symbolic____
+        if not 'eval_symbolic____' in attr:
+            def eval_symbolic____(cls, *args, **kwargs):
+                args = cls.eval_symbolic_packargs(args, kwargs)
+                r = 'np.{}({})'.format(name, args)
+                return r                    
+            t.eval_symbolic____ = eval_symbolic____
         return t        
         return t
         
@@ -239,7 +240,10 @@ class ŋp_astype(node_numpy__):
 
 @in_node____
 class ŋp_add(metaclass=node_numpy_metaclass__):
-    pass
+    @classmethod
+    def eval_symbolic____(cls, a, b):
+        r = '{} + {}'.format(a, b)
+        return r           
 
 @in_node____
 class ŋp_subtract(metaclass=node_numpy_metaclass__):
@@ -247,7 +251,10 @@ class ŋp_subtract(metaclass=node_numpy_metaclass__):
 
 @in_node____
 class ŋp_multiply(metaclass=node_numpy_metaclass__):
-    pass
+    @classmethod
+    def eval_symbolic____(cls, a, b):
+        r = '{} * {}'.format(a, b)
+        return r     
 
 @in_node____
 class ŋp_divide(metaclass=node_numpy_metaclass__):

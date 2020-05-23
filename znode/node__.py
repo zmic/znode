@@ -56,60 +56,60 @@ class node____(tuple):
         return self[-1][0]
 
     def __mul__(self, other):
-        return self.ŋnp_multiply(self, other)   
+        return self.ŋp_multiply(self, other)   
         
     def __add__(self, other):
-        return self.ŋnp_add(self, other)   
+        return self.ŋp_add(self, other)   
    
     def __sub__(self, other):
-        return self.ŋnp_subtract(self, other)   
+        return self.ŋp_subtract(self, other)   
         
     def __pow__(self, other):
-        return self.ŋnp_power(self, other)   
+        return self.ŋp_power(self, other)   
         
     def __truediv__ (self, other):
-        return self.ŋnp_divide(self, other)   
+        return self.ŋp_divide(self, other)   
 
     def __floordiv__ (self, other):
         return
-        #return self.ŋnp_divide(self, other)   
+        #return self.ŋp_divide(self, other)   
         
     def __mod__(self, other):
-        return self.ŋnp_remainder(self, other)   
+        return self.ŋp_remainder(self, other)   
         
     def __neg__(self):
-        return self.ŋnp_negative(self, other)   
+        return self.ŋp_negative(self, other)   
 
     def __eq__(self, other):
-        return self.ŋnp_equal(self, other)   
+        return self.ŋp_equal(self, other)   
 
     def __ne__(self, other):
-        return self.ŋnp_not_equal(self, other)   
+        return self.ŋp_not_equal(self, other)   
 
     def __gt__(self, other):
-        return self.ŋnp_greater(self, other)   
+        return self.ŋp_greater(self, other)   
         
     def __lt__(self, other):
-        return self.ŋnp_less(self, other)   
+        return self.ŋp_less(self, other)   
         
     def __ge__(self, other):
-        return self.ŋnp_greater_equal(self, other)   
+        return self.ŋp_greater_equal(self, other)   
         
     def __le__(self, other):
-        return self.ŋnp_less_equal(self, other)   
+        return self.ŋp_less_equal(self, other)   
 
 
     def __radd__(self, other):
-        return self.ŋnp_add(other, self)   
+        return self.ŋp_add(other, self)   
 
     def __rsub__(self, other):
-        return self.ŋnp_subtract(other, self)   
+        return self.ŋp_subtract(other, self)   
 
     def __rmul__(self, other):
-        return self.ŋnp_multiply(other, self)   
+        return self.ŋp_multiply(other, self)   
     
     def __rtruediv__(self, other):
-        return self.ŋnp_divide(other, self)           
+        return self.ŋp_divide(other, self)           
 
 
     #def __getitem__(self, *args):

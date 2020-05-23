@@ -86,7 +86,7 @@ class ŋdiv(node__):
 class node_rg__(node__):
     pass
 
-class ŋnp_RandomState(node_rg__):
+class ŋp_RandomState(node_rg__):
     @staticmethod
     def eval__(i):
         return np.random.RandomState(i)
@@ -142,7 +142,7 @@ class ŋp_ndtype(node__):
 class node_numpy__(node__):
     class slice__(tuple):
         def __getitem__(self, i):
-            return ŋnp_slice(tuple.__getitem__(self, 0), i)       
+            return ŋp_slice(tuple.__getitem__(self, 0), i)       
     @property
     def slice(self):
         return node_numpy__.slice__((self,))
@@ -151,23 +151,23 @@ class node_numpy__(node__):
         def __getitem__(self, i):
             operation, n = self
             #n = tuple.__getitem__(self, 1)
-            return operation( n, ŋnp_slice(n, i[:-1]), i[-1])
+            return operation( n, ŋp_slice(n, i[:-1]), i[-1])
     @property
     def slice_assign(self):
-        return node_numpy__.slicer_inplace_operation__((ŋnp_inplace_assign, self))
+        return node_numpy__.slicer_inplace_operation__((ŋp_inplace_assign, self))
     @property
     def slice_multiply(self):
-        return node_numpy__.slicer_inplace_operation__((ŋnp_inplace_multiply, self))
+        return node_numpy__.slicer_inplace_operation__((ŋp_inplace_multiply, self))
     @property
     def slice_add(self):
-        return node_numpy__.slicer_inplace_operation__((ŋnp_inplace_add, self))
+        return node_numpy__.slicer_inplace_operation__((ŋp_inplace_add, self))
     
     def astype(self, ndtype):
-        return ŋnp_astype(self, ndtype)
+        return ŋp_astype(self, ndtype)
 
 
 
-class ŋnp_array(node_numpy__):
+class ŋp_array(node_numpy__):
     @classmethod
     def ŋtuple(cls, *args):
         return ŋtuple_literal(args)
@@ -175,7 +175,7 @@ class ŋnp_array(node_numpy__):
     def eval__(*args):        
         return np.array(*args)
 
-class ŋnp_slice(node_numpy__):
+class ŋp_slice(node_numpy__):
     @staticmethod
     def eval__(a, i):        
         return a[i]
@@ -184,32 +184,32 @@ class node_numpy_metaclass__(type):
     def __new__(cls, name, bases, attr):
         cls = type(node_numpy__)
         t = cls.__new__(cls, name, (node_numpy__,), attr)
-        name = name[4:]
+        name = name[3:]
         f = getattr(np, name)
         def eval__(s, *args):
             return f(*args)
         t.eval__ = eval__
         return t
         
-class ŋnp_inplace_assign(node_numpy__):
+class ŋp_inplace_assign(node_numpy__):
     @staticmethod
     def eval__(a, b, i):  
         b[...] = i
         return a
 
-class ŋnp_inplace_multiply(node_numpy__):
+class ŋp_inplace_multiply(node_numpy__):
     @staticmethod
     def eval__(a, b, i):  
         b[...] *= i
         return a
 
-class ŋnp_inplace_add(node_numpy__):
+class ŋp_inplace_add(node_numpy__):
     @staticmethod
     def eval__(a, b, i):  
         b[...] += i
         return a
 
-class ŋnp_astype(node_numpy__):
+class ŋp_astype(node_numpy__):
     @staticmethod
     def eval__(a, dtype):  
         return a.astype(dtype)
@@ -221,128 +221,128 @@ class ŋnp_astype(node_numpy__):
 #------------------------------------------------------------
 
 @in_node____
-class ŋnp_add(metaclass=node_numpy_metaclass__):
+class ŋp_add(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
-class ŋnp_subtract(metaclass=node_numpy_metaclass__):
+class ŋp_subtract(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
-class ŋnp_multiply(metaclass=node_numpy_metaclass__):
+class ŋp_multiply(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
-class ŋnp_divide(metaclass=node_numpy_metaclass__):
+class ŋp_divide(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
-class ŋnp_remainder(metaclass=node_numpy_metaclass__):
+class ŋp_remainder(metaclass=node_numpy_metaclass__):
     pass
     
 @in_node____
-class ŋnp_negative(metaclass=node_numpy_metaclass__):
-    pass
-    
-#------------------------------------------------------------
-    
-@in_node____
-class ŋnp_equal(metaclass=node_numpy_metaclass__):
-    pass
-    
-@in_node____
-class ŋnp_not_equal(metaclass=node_numpy_metaclass__):
-    pass
-    
-@in_node____
-class ŋnp_greater(metaclass=node_numpy_metaclass__):
-    pass
-    
-@in_node____
-class ŋnp_less(metaclass=node_numpy_metaclass__):
-    pass
-    
-@in_node____
-class ŋnp_greater_equal(metaclass=node_numpy_metaclass__):
-    pass
-    
-@in_node____
-class ŋnp_less_equal(metaclass=node_numpy_metaclass__):
-    pass
-
-#------------------------------------------------------------
-
-@in_node____
-class ŋnp_sin(metaclass=node_numpy_metaclass__):
-    pass
-    
-@in_node____
-class ŋnp_cos(metaclass=node_numpy_metaclass__):
-    pass
-
-@in_node____
-class ŋnp_tan(metaclass=node_numpy_metaclass__):
-    pass
-
-@in_node____
-class ŋnp_exp(metaclass=node_numpy_metaclass__):
-    pass
-
-@in_node____
-class ŋnp_log(metaclass=node_numpy_metaclass__):
+class ŋp_negative(metaclass=node_numpy_metaclass__):
     pass
     
 #------------------------------------------------------------
-
-class ŋnp_abs(metaclass=node_numpy_metaclass__):
+    
+@in_node____
+class ŋp_equal(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_not_equal(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_greater(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_less(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_greater_equal(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_less_equal(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_max(metaclass=node_numpy_metaclass__):
+#------------------------------------------------------------
+
+@in_node____
+class ŋp_sin(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_cos(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_min(metaclass=node_numpy_metaclass__):
+@in_node____
+class ŋp_tan(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_maximum(metaclass=node_numpy_metaclass__):
+@in_node____
+class ŋp_exp(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_minimum(metaclass=node_numpy_metaclass__):
+@in_node____
+class ŋp_log(metaclass=node_numpy_metaclass__):
+    pass
+    
+#------------------------------------------------------------
+
+class ŋp_abs(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_isnan(metaclass=node_numpy_metaclass__):
+class ŋp_max(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_indices(metaclass=node_numpy_metaclass__):
+class ŋp_min(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_repeat(metaclass=node_numpy_metaclass__):
+class ŋp_maximum(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_digitize(metaclass=node_numpy_metaclass__):
+class ŋp_minimum(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_take(metaclass=node_numpy_metaclass__):
+class ŋp_isnan(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_copy(metaclass=node_numpy_metaclass__):
+class ŋp_indices(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_where(metaclass=node_numpy_metaclass__):
+class ŋp_repeat(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_digitize(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_take(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_copy(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_where(metaclass=node_numpy_metaclass__):
     pass
                 
-class ŋnp_transpose(metaclass=node_numpy_metaclass__):
+class ŋp_transpose(metaclass=node_numpy_metaclass__):
     pass
     
-class ŋnp_concatenate(metaclass=node_numpy_metaclass__):
+class ŋp_concatenate(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_dstack(metaclass=node_numpy_metaclass__):
+class ŋp_dstack(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_reshape(metaclass=node_numpy_metaclass__):
+class ŋp_reshape(metaclass=node_numpy_metaclass__):
     pass
 
-class ŋnp_ascontiguousarray(metaclass=node_numpy_metaclass__):
+class ŋp_ascontiguousarray(metaclass=node_numpy_metaclass__):
     pass
 
 #-------------------------------------------------------    

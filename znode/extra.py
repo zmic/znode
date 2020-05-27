@@ -26,7 +26,7 @@ class ŋccanvas(node_numpy__):
         I = np.indices((Y,X)).astype(dtype)
         fy = (y1 - y0) / (Y - 1) if endpoint else (y1 - y0) / Y
         fx = (x1 - x0) / (X - 1) if endpoint else (x1 - x0) / X
-        return = (x0 + fx*I[1]) + 1j*(y0 + fy*I[0])
+        return (x0 + fx*I[1]) + 1j*(y0 + fy*I[0])
 
 @in_node_dict
 class ŋrotatexy(node_numpy__):

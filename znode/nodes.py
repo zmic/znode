@@ -361,6 +361,12 @@ class ŋp_fmod(metaclass=node_numpy_metaclass__):
 class ŋp_abs(metaclass=node_numpy_metaclass__):
     pass
 
+class ŋp_real(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_imag(metaclass=node_numpy_metaclass__):
+    pass
+
 class ŋp_floor(metaclass=node_numpy_metaclass__):
     pass
 

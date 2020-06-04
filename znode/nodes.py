@@ -209,7 +209,6 @@ class node_numpy_metaclass__(type):
                 return r                    
             t.eval_symbolic____ = eval_symbolic____
         return t        
-        return t
         
 class ŋp_inplace_assign(node_numpy__):
     @staticmethod
@@ -281,6 +280,10 @@ class ŋp_negative(metaclass=node_numpy_metaclass__):
 class ŋp_square(metaclass=node_numpy_metaclass__):
     pass
 
+@in_node____
+class ŋp_sqrt(metaclass=node_numpy_metaclass__):
+    pass
+
 #------------------------------------------------------------
     
 @in_node____
@@ -343,6 +346,18 @@ class ŋp_cosh(metaclass=node_numpy_metaclass__):
 
 @in_node____
 class ŋp_tanh(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋp_arcsinh(metaclass=node_numpy_metaclass__):
+    pass
+    
+@in_node____
+class ŋp_arccosh(metaclass=node_numpy_metaclass__):
+    pass
+
+@in_node____
+class ŋp_arctanh(metaclass=node_numpy_metaclass__):
     pass
 
 @in_node____
@@ -434,27 +449,12 @@ def node_wrap_function(baseclass, func, in_node____ = False):
 
 node_wrap_function(node__, slice, in_node____ = True)
 
-#-------------------------------------------------------    
-node_dict = {}
-def load(data):
-    L = []
-    for type, args in data:
-        t = node_dict[type]
-        if issubclass(t, node__):
-            args = [L[x] for x in args]
-        elif issubclass(t, node_literal__):
-            pass
-        else:
-            raise TypeError()
-        L.append(t(*args))  
-    return L[-1]
 
 #-------------------------------------------------------    
-
-__all__ = ["load", "node_dict"]
+load = node____.load
+__all__ = ["load"]
 for x, y in list(globals().items()):
     if isinstance(y, type):
         if y.__name__[0] == 'ŋ':
             __all__.append(x)
-            node_dict[x] = y
 

@@ -14,13 +14,38 @@ def dump____(L, D, n):
     D[nid] = r
     return r
               
-class node____(tuple):        
+
+node_dict___ = {}        
+class metaclass_node(type):
+    def __new__(cls, name, bases, attr, **kwargs):
+        t = super().__new__(cls, name, bases, attr)
+        if name[0] == 'ŋ':
+            if name in node_dict___:
+                raise TypeError("Node type '{}' already exists".format(name))
+            node_dict___[name] = t
+        return t
+
+class node____(tuple, metaclass = metaclass_node):
     def dump(self):
         L = []
         D = {}
         dump____(L, D, self)
         return L
         
+    @staticmethod
+    def load(data):
+        L = []
+        for type, args in data:
+            t = node_dict___[type]
+            if issubclass(t, node__):
+                args = [L[x] for x in args]
+            elif issubclass(t, node_literal__):
+                pass
+            else:
+                raise TypeError()
+            L.append(t(*args))  
+        return L[-1]
+
     class indexer(tuple):
         def __getitem__(self, i):
             return node____.ŋindex(tuple.__getitem__(self, 0), i)       
@@ -225,9 +250,10 @@ class node__(node____):
         
 
 #-------------------------------------------------------    
-class metaclass_node_apply__(type):
+
+class metaclass_node_apply__(metaclass_node):
     def __new__(cls, name, bases, attr):
-        t = type.__new__(cls, name, bases, attr)
+        t = super().__new__(cls, name, bases, attr)
         name = name[1:]
         def eval__(s, o, *args, **kwargs):
             return getattr(o, name)(*args, **kwargs)
@@ -237,15 +263,6 @@ class metaclass_node_apply__(type):
             r = '{}.{}({})'.format(o, name, args)
             return r                    
         t.eval_symbolic____ = eval_symbolic____
-        return t
-
-class metaclass_node_func__(type):
-    def __new__(cls, name, bases, attr, **kargs):
-        t = type.__new__(cls, name, bases, attr)
-        func = kwargs['f']
-        def eval__(s, o, *args, **kwargs):
-            return func(*args, **kwargs)
-        t.eval__ = eval__
         return t
 
 #-------------------------------------------------------    

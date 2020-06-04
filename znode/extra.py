@@ -2,14 +2,10 @@ import numpy as np
 import randomgen
 
 from .node__ import node____, node_literal__, node__, metaclass_node_apply__
-from .nodes import node_numpy__, node_dict
+from .nodes import node_numpy__
 
 #-------------------------------------------------------    
-def in_node_dict(x):
-    node_dict[x.__name__] = x
-    return x
 
-@in_node_dict
 class ŋcanvas(node_numpy__):
     @staticmethod
     def eval__(X, Y, x0, x1, y0, y1, endpoint, dtype):
@@ -19,7 +15,6 @@ class ŋcanvas(node_numpy__):
         I[0], I[1] = x0 + fx*I[1], y0 + fy*I[0]
         return I.astype(dtype)
 
-@in_node_dict
 class ŋccanvas(node_numpy__):
     @staticmethod
     def eval__(X, Y, x0, x1, y0, y1, endpoint, dtype):
@@ -28,7 +23,6 @@ class ŋccanvas(node_numpy__):
         fx = (x1 - x0) / (X - 1) if endpoint else (x1 - x0) / X
         return (x0 + fx*I[1]) + 1j*(y0 + fy*I[0])
 
-@in_node_dict
 class ŋrotatexy(node_numpy__):
     @staticmethod
     def eval__(X, Y, a):

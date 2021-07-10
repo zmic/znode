@@ -1,5 +1,4 @@
 import numpy as np
-import randomgen
 
 from .node__ import node____, node_literal__, node__, metaclass_node_apply__
 
@@ -101,7 +100,7 @@ class ŋp_RandomState(node_rg__):
 class ŋrg_MT19937(node_rg__):
     @staticmethod
     def eval__(i, j = None):
-        rng = randomgen.Generator(randomgen.MT19937(i, mode='sequence'))
+        rng = np.random.Generator( np.random.MT19937(i))
         return rng
 #-------------------------------------------------------    
 class node_random_quantity__(node__):

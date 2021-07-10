@@ -90,9 +90,9 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)
         self.assertEqual(n.r[0,0],0)
 
-        n = n.astype(np.int).astype(np.float)
+        n = n.astype(np.int32).astype(np.float64)
         
-        n1 = n.astype(np.int).astype(np.float).astype('uint8')
+        n1 = n.astype(np.int32).astype(np.float64).astype('uint8')
         self.reproduce(n)
 
         nr = ŋrg_MT19937(1201)
@@ -140,7 +140,7 @@ class znode_test1(unittest.TestCase):
     
         n = ŋstandard_normal(ŋrg_MT19937(ŋint(12)),(3,4))
         x = n.eval()
-        self.assertAlmostEqual(x[0][0], -0.48977262 )
+        self.assertAlmostEqual(x[0][0], -0.82183416 )
         x = n.dump()
         #self.assertEqual(x, [['ŋint', [12]], ['ŋrg_MT19937', [0]], ['ŋtuple', [(3, 4)]], ['ŋstandard_normal', [1, 2]]])
         x = json.dumps(n.dump())
@@ -149,7 +149,7 @@ class znode_test1(unittest.TestCase):
         #self.assertEqual(x, [['ŋint', [12]], ['ŋrg_MT19937', [0]], ['ŋtuple', [[3, 4]]], ['ŋstandard_normal', [1, 2]]])
         n2 = json_loads(json_dumps(n))
         x = n2.eval()
-        self.assertAlmostEqual(x[0][0], -0.48977262 )
+        self.assertAlmostEqual(x[0][0], -0.82183416 )
 
         #self.assertEqual( "ŋstandard_normal(ŋrg_MT19937(ŋint(12)), ŋtuple((3, 4)))", repr(ŋstandard_normal(ŋrg_MT19937(ŋint(12)), ŋtuple((3, 4)))))
         #self.assertEqual( "ŋstandard_normal(ŋrg_MT19937(ŋint(12)), ŋtuple((3, 4)))", repr(ŋstandard_normal(ŋrg_MT19937(ŋint(12)), (3, 4))))

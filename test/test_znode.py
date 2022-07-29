@@ -11,23 +11,31 @@ def json_loads(s):
 
 class znode_test1(unittest.TestCase):
 
-    def reproduce(self, n): 
-        x = n.eval()
-        y = json_loads(json_dumps(n)).eval()
+    def reproduce(self, nx): 
+        nx.reset()
+        x = nx.eval_debug()
+        ny = json_loads(json_dumps(nx))
+        y = ny.eval_debug()
         if isinstance(x, np.ndarray):
-            return self.assertTrue((x==y).all())
-        return self.assertEqual(x, y)
+            self.assertEqual(x.dtype, y.dtype)
+            self.assertEqual(x.shape, y.shape) 
+            self.assertTrue((x==y).all())
+        else:
+            self.assertEqual(x, y)
+        self.assertEqual(nx.debug_info, ny.debug_info)
 
     def reproduce_literal(self, n): 
         x = n.r
         y = json_loads(json_dumps(n)).r
         if isinstance(x, np.ndarray):
+            self.assertEqual(x.dtype, y.dtype)
+            self.assertEqual(x.shape, y.shape)             
             return self.assertTrue((x==y).all())
         return self.assertEqual(x, y)
 
 
     def test0(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋtuple_literal
+        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋlist_literal
 
         n = ŋtuple()
         x = n.eval()
@@ -49,17 +57,21 @@ class znode_test1(unittest.TestCase):
         n = ŋtuple(1,2,3)
         n2 = n.index[1:4]
         self.assertEqual(n2.eval(), (2,3))
+        n2 = n.index[1:4]
+        print(n2)
+        self.reproduce(n2)
+
         n3 = n2.index[-1]
         self.assertEqual(n3.eval(), 3)
         n3 = n2.index[-1]
         self.reproduce(n3)
 
-        n = ŋtuple_literal(())
-        self.assertEqual(n.r, ())
+        n = ŋlist_literal(())
+        self.assertEqual(n.r, [])
         self.reproduce_literal(n)
-        n = ŋtuple_literal((1,2,3))
-        self.assertEqual(str(n),'ŋtuple_literal((1, 2, 3))')
-        self.assertEqual(n.r, (1,2,3))
+        n = ŋlist_literal((1,2,3))
+        self.assertEqual(str(n),'ŋlist_literal([1, 2, 3])')
+        self.assertEqual(n.r, [1,2,3])
         self.reproduce_literal(n)
         #n = ŋtuple_literal((1,2,(3,(),(3,))))
         #self.reproduce_literal(n)
@@ -112,7 +124,7 @@ class znode_test1(unittest.TestCase):
         #print(B.r)
 
     def test0c(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋtuple_literal, ŋslice
+        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋlist_literal, ŋslice
         a = ŋp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)
         
@@ -126,7 +138,7 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(str(n), 'ŋslice(ŋint(0), ŋint(1), ŋNone(None))')
         
         n = a.slice[1,0]
-        self.assertEqual(str(n), "ŋp_slice(ŋp_array(ŋtuple_literal(([1, 2], [3, 4])), ŋp_ndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
+        self.assertEqual(str(n), "ŋp_slice(ŋp_array(ŋlist_literal([[1, 2], [3, 4]]), ŋp_ndtype(ŋstr('float32'))), ŋtuple(ŋint(1), ŋint(0)))")
         self.assertEqual(n.eval(), 3)
 
         n = a.slice[1,0]
@@ -240,7 +252,7 @@ class znode_test1(unittest.TestCase):
         ['ŋfloat', [0.0]], ['ŋp_where', [52, 53, 51]], ['ŋfloat', [-1e+300]], ['ŋp_minimum', [54, 55]], ['ŋfloat', [1e+300]], 
         ['ŋp_maximum', [56, 57]], ['ŋp_min', [58]], ['ŋp_max', [58]], ['ŋtuple', [58, 59, 60]]]
 
-        from znode import load, ŋtuple_literal
+        from znode import load
         from znode.core import node__
         from znode.extra import ŋcanvas
         n = load(L)
@@ -250,7 +262,7 @@ class znode_test1(unittest.TestCase):
         K = n.eval_symbolic()
         n = extra(())  # extra(ŋtuple())        
         n = extra(((),()))  # extra(ŋtuple(ŋtuple(), ŋtuple()))       
-        n = extra(ŋtuple_literal(([],[])))
+        
 
 
 

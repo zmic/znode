@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\python38\\python.exe"
+    //"python.pythonPath": "C:\\python38\\python.exe"
+    "python.defaultInterpreterPath": "/Users/michael/dev/venv/3.10-env1/bin/python3.10"
 }

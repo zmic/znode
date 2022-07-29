@@ -158,7 +158,8 @@ class node_literal__(node____):
         return t
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__,repr(self[0][0]))        
-
+    def reset(self):
+        pass
 #-------------------------------------------------------    
 class node__(node____):
     symbolic_name = None
@@ -178,19 +179,30 @@ class node__(node____):
         if len(a) == 1:
            return '{}({})'.format(self.__class__.__name__,repr(self[0]))        
         else:
-            return self.__class__.__name__ + repr(self[:-1])        
-    def eval(self, debug=0):
+            return self.__class__.__name__ + repr(a) 
+    def eval_debug(self):
+        self.debug_info = []
+        return self.eval_debug_(0, self.debug_info)
+    def eval_debug_(self, depth, debug_info):
         if self[-1]:
             raise RuntimeError("Node already evaluated")
-        if debug:
-            debug += 2
         A = self[:-1]
         for i in A:
             if not i[-1]:
-                i.eval(debug)
-        if debug:
-            debug -= 2
-            print(' '*debug, str(self)[:120])
+                i.eval_debug_(depth + 1, debug_info)
+        debug_info.append((depth,str(self)[:120]))
+        args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwargx)]
+        kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwargx)}
+        r = self.eval__(*args, **kwargs)
+        self[-1].append(r)
+        return r                   
+    def eval(self):
+        if self[-1]:
+            raise RuntimeError("Node already evaluated")
+        A = self[:-1]
+        for i in A:
+            if not i[-1]:
+                i.eval()
         args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwargx)]
         kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwargx)}
         r = self.eval__(*args, **kwargs)
@@ -247,7 +259,11 @@ class node__(node____):
         return lines
     def astype(self, ndtype):
         return self.ŋp_astype(self, ndtype)
-        
+    def reset(self):
+        for x in self[:-1]:
+            x.reset()
+        self[-1].clear()
+           
 
 #-------------------------------------------------------    
 

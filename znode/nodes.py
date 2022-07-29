@@ -31,10 +31,15 @@ class ŋcomplex(node_literal__):
 class ŋstr(node_literal__):
     pass
 
-class ŋtuple_literal(node_literal__):
+def tuples2lists__(t):
+    return [tuples2lists__(x) if isinstance(x, (list, tuple)) else x for x in t]
+
+# this class is only used for ŋp_array constructor
+class ŋlist_literal(node_literal__):
     def  __new__(cls, items):
-        if isinstance(items, list):
-            items = tuple(items)
+        # items can be single number since np.array constructor allows this
+        if isinstance(items, (list, tuple)):
+            items = tuples2lists__(items)
         t = node_literal__.__new__(cls, items)
         return t  
 
@@ -60,7 +65,6 @@ class ŋkwarg(node__):
     def eval_symbolic____(cls, k, v):
         r = '{}={}'.format(k, v)
         return r   
-
 
 #-------------------------------------------------------  
   
@@ -178,7 +182,7 @@ class node_numpy__(node__):
 class ŋp_array(node_numpy__):
     @classmethod
     def ŋtuple(cls, *args):
-        return ŋtuple_literal(args)
+        return ŋlist_literal(args)
     @staticmethod
     def eval__(*args):        
         return np.array(*args)
@@ -198,8 +202,8 @@ class node_numpy_metaclass__(type):
         t = cls.__new__(cls, name, (node_numpy__,), attr)
         name = name[3:]
         f = getattr(np, name)
-        def eval__(s, *args):
-            return f(*args)
+        def eval__(s, *args, **kwargs):
+            return f(*args, **kwargs)
         t.eval__ = eval__
         if not 'eval_symbolic____' in attr:
             def eval_symbolic____(cls, *args, **kwargs):
@@ -438,6 +442,11 @@ class ŋp_reshape(metaclass=node_numpy_metaclass__):
 class ŋp_ascontiguousarray(metaclass=node_numpy_metaclass__):
     pass
 
+class ŋp_zeros(metaclass=node_numpy_metaclass__):
+    pass
+
+class ŋp_ones(metaclass=node_numpy_metaclass__):
+    pass
 #-------------------------------------------------------    
 def node_wrap_function(baseclass, func, in_node____ = False):
     name = 'ŋ' + func.__name__

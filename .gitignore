@@ -6,6 +6,7 @@ dist
 *.pyd
 __pycache__
 *.jpg
+.DS_Store
 
 
 

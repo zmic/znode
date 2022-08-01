@@ -50,7 +50,7 @@ class znode_test1(unittest.TestCase):
         K = n.eval_symbolic()
         
     def testa(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋlist_literal
+        from znode import ŋr_integers, ŋint, ŋtuple, ŋp_array, ŋlist_literal
 
         n = ŋtuple()
         x = n.eval()
@@ -106,10 +106,10 @@ class znode_test1(unittest.TestCase):
         self.assertEqual(n.r, -1)
 
     def test0b(self):    
-        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple, ŋrandint, ŋp_RandomState
+        from znode import ŋr_integers, ŋr_MT19937, ŋint, ŋtuple, ŋr_Generator
 
-        nr = ŋrg_MT19937(1200)
-        B = ŋintegers(nr,0,8,(3,4))*np.pi/2
+        nr = ŋr_Generator(ŋr_MT19937(1200))
+        B = ŋr_integers(nr,0,8,(3,4))*np.pi/2
         n = B.slice[0,:] * 2       
         self.reproduce(n)
         
@@ -122,24 +122,16 @@ class znode_test1(unittest.TestCase):
         n1 = n.astype(np.int32).astype(np.float64).astype('uint8')
         self.reproduce(n)
 
-        nr = ŋrg_MT19937(1201)
-        B = ŋintegers(nr,1,8,(2,4))*np.pi/2
+        nr = ŋr_Generator(ŋr_MT19937(1201))
+        B = ŋr_integers(nr,1,8,(2,4))*np.pi/2
         B = B.slice_multiply[0,0:1,50]
         B = B.slice_multiply[0,0:1,50]
         B = B.slice_multiply[1,2:3,50]
         self.reproduce(B)
         #print(B.r)
 
-        nrnd = ŋp_RandomState(32)
-        B = ŋrandint(nr,1,8,(2,4))*np.pi/2
-        B = B.slice_multiply[0,0:1,50]
-        B = B.slice_multiply[0,0:1,50]
-        B = B.slice_multiply[1,2:3,50]
-        #B.eval()
-        #print(B.r)
-
     def test0c(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋlist_literal, ŋslice
+        from znode import ŋint, ŋtuple, ŋp_array, ŋlist_literal, ŋslice
         a = ŋp_array(((1,2),(3,4)), np.float32)
         self.reproduce(a)
         
@@ -163,9 +155,9 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)      
     
     def test1(self):    
-        from znode import ŋstandard_normal, ŋrg_MT19937, ŋintegers, ŋint, ŋtuple
+        from znode import ŋr_standard_normal, ŋr_MT19937, ŋr_Generator, ŋr_integers, ŋint, ŋtuple
     
-        n = ŋstandard_normal(ŋrg_MT19937(ŋint(12)),(3,4))
+        n = ŋr_standard_normal(ŋr_Generator(ŋr_MT19937(ŋint(12))),(3,4))
         x = n.eval()
         self.assertAlmostEqual(x[0][0], -0.82183416 )
         x = n.dump()
@@ -181,8 +173,8 @@ class znode_test1(unittest.TestCase):
         #self.assertEqual( "ŋstandard_normal(ŋrg_MT19937(ŋint(12)), ŋtuple((3, 4)))", repr(ŋstandard_normal(ŋrg_MT19937(ŋint(12)), ŋtuple((3, 4)))))
         #self.assertEqual( "ŋstandard_normal(ŋrg_MT19937(ŋint(12)), ŋtuple((3, 4)))", repr(ŋstandard_normal(ŋrg_MT19937(ŋint(12)), (3, 4))))
 
-        n = ŋrg_MT19937(12)
-        n = ŋintegers(n, 0, 10, (4,4))
+        n = ŋr_Generator(ŋr_MT19937(12))
+        n = ŋr_integers(n, 0, 10, (4,4))
         self.reproduce(n)
 
     def test2(self):
@@ -209,7 +201,8 @@ class znode_test1(unittest.TestCase):
         self.reproduce(n)
 
     def test3(self):
-        from znode import ŋp_indices, ŋp_transpose, ŋrandom, ŋp_RandomState, ŋp_concatenate, ŋtuple, ŋp_reshape
+        from znode import ŋp_indices, ŋp_transpose, ŋp_concatenate, ŋtuple, ŋp_reshape
+        from znode import ŋr_Generator, ŋr_PCG64, ŋr_random
         x = 8
         n = ŋp_transpose(ŋp_indices((x,x)), (1,2,0))
         self.reproduce(n)
@@ -223,20 +216,22 @@ class znode_test1(unittest.TestCase):
         n1 = ŋp_reshape(n1, (x*x,2))
         self.reproduce(n1)
 
-        nr = ŋp_RandomState(32)
-        n2 = ŋrandom(nr, (x*x,1))
+        nr = ŋr_Generator(ŋr_PCG64(32))
+        n2 = ŋr_random(nr, (x*x,1))
         n2 = n2 / 10
         self.reproduce(n2)
         n1 = ŋp_concatenate((n1, n2), 1)
         self.reproduce(n1)
 
     def test4(self):    
-        from znode import ŋintegers, ŋrg_MT19937, ŋint, ŋtuple, ŋrandint, ŋp_RandomState, ŋp_transpose, ŋp_indices, ŋnormal_int
-        nrnd2 = ŋrg_MT19937(12)
-        n = ŋintegers(nrnd2, 0, 100)            
+        from znode import ŋr_integers, ŋr_default_rng, ŋint, ŋtuple, ŋr_integers
+        from znode import ŋp_transpose, ŋp_indices, ŋr_normal_int
+        
+        nrnd2 = ŋr_default_rng(12)
+        n = ŋr_integers(nrnd2, 0, 100)            
         self.assertEqual(type(n.eval()), np.int64)
 
-        i = ŋintegers(nrnd2, 5, 6)
+        i = ŋr_integers(nrnd2, 5, 6)
         nxy = (1/i)
         self.assertEqual(nxy.eval(), 0.2)
 
@@ -246,11 +241,11 @@ class znode_test1(unittest.TestCase):
         #print(nxy.eval())
 
         for i in range(10):
-            n = ŋnormal_int(nrnd2, 3)
+            n = ŋr_normal_int(nrnd2, 3)
             n.eval()
 
-        rs = ŋp_RandomState(4)
-        a = ŋrandint(rs, 0, 10, dtype=np.int32)
+        rs = ŋr_default_rng(4)
+        a = ŋr_integers(rs, 0, 10, dtype=np.int32)
         self.reproduce(a)
     
 if __name__ == '__main__':

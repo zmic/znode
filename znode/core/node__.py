@@ -271,7 +271,7 @@ class node__(node____):
 class metaclass_node_apply__(metaclass_node):
     def __new__(cls, name, bases, attr):
         t = super().__new__(cls, name, bases, attr)
-        name = name[1:]
+        name = s_[1] if len(s_ := name.split('_', 1)) > 1 else name[1:]
         def eval__(s, o, *args, **kwargs):
             return getattr(o, name)(*args, **kwargs)
         t.eval__ = eval__ 
@@ -282,6 +282,26 @@ class metaclass_node_apply__(metaclass_node):
         t.eval_symbolic____ = eval_symbolic____
         return t
 
+
+def def_metaclass_node_apply(container, container_name=None):
+    container_name = container_name or str(container)
+    class metaclass_node_apply__(metaclass_node):
+        def __new__(cls, name, bases, attr):
+            t = super().__new__(cls, name, bases, attr)
+            if name[-2:] != '__':
+                name = name.split('_', 1)[1]
+                f = getattr(container, name)
+                def eval__(s, *args, **kwargs):
+                    return f(*args, **kwargs)
+                t.eval__ = eval__ 
+                if not 'eval_symbolic____' in attr:
+                    def eval_symbolic____(cls, *args, **kwargs):
+                        args = cls.eval_symbolic_packargs(args, kwargs)
+                        r = '{}.{}({})'.format(container_name, name, args)
+                        return r                    
+                t.eval_symbolic____ = eval_symbolic____
+            return t
+    return metaclass_node_apply__
 #-------------------------------------------------------    
 def yield_once__(S, n):
     nid = id(n)

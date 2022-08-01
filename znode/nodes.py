@@ -1,6 +1,6 @@
 import numpy as np
 
-from znode.core.node__ import node____, node_literal__, node__, metaclass_node_apply__
+from znode.core.node__ import node____, node_literal__, node__, metaclass_node_apply__, def_metaclass_node_apply
 
 def in_node____(x):
     setattr(node____, x.__name__, x)
@@ -93,47 +93,47 @@ class ŋdiv(node__):
         return x / y
             
 #-------------------------------------------------------    
-class node_rg__(node__):
+np_random_metaclass = def_metaclass_node_apply(np.random)
+class node_np_random__(node__, metaclass=np_random_metaclass):
     pass
 
-class ŋp_RandomState(node_rg__):
-    @staticmethod
-    def eval__(i):
-        return np.random.RandomState(i)
+class ŋr_default_rng(node_np_random__):
+    pass
 
-class ŋrg_MT19937(node_rg__):
-    @staticmethod
-    def eval__(i, j = None):
-        rng = np.random.Generator( np.random.MT19937(i))
-        return rng
+class ŋr_Generator(node_np_random__):
+    pass
+
+class ŋr_MT19937(node_np_random__):
+    pass
+
+class ŋr_PCG64(node_np_random__):
+    pass
 #-------------------------------------------------------    
-class node_random_quantity__(node__):
+class node_random_samples__(node__):
     pass
 
-class ŋstandard_normal(node_random_quantity__, metaclass=metaclass_node_apply__):
+class ŋr_integers(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋnormal(node_random_quantity__, metaclass=metaclass_node_apply__):
+class ŋr_random(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋintegers(node_random_quantity__, metaclass=metaclass_node_apply__):
+class ŋr_choice(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋrandint(node_random_quantity__, metaclass=metaclass_node_apply__):
+class ŋr_bytes(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋrandom(node_random_quantity__, metaclass=metaclass_node_apply__):
+class ŋr_standard_normal(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋrandn(node_random_quantity__, metaclass=metaclass_node_apply__):
+class ŋr_normal(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
-class ŋnormal_int(node_random_quantity__):
+class ŋr_normal_int(node_random_samples__):
     @staticmethod
     def eval__(rng, loc=0.0, scale=1.0, size=None):
         return np.round(rng.normal(loc, scale, size)).astype(int)
-
-
 
 #-------------------------------------------------------  
 
@@ -212,7 +212,7 @@ class node_numpy_metaclass__(type):
                 return r                    
             t.eval_symbolic____ = eval_symbolic____
         return t        
-        
+      
 class ŋp_inplace_assign(node_numpy__):
     @staticmethod
     def eval__(a, b, i):  

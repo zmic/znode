@@ -151,6 +151,7 @@ class node____(tuple, metaclass = metaclass_node):
         for n in self.yield_of_type(type):
             return n
 
+load = node____.load
 #-------------------------------------------------------    
 class node_literal__(node____):
     def  __new__(cls, v):

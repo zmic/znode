@@ -2,12 +2,13 @@ import unittest
 import json
 import numpy as np
 import znode
+import znode.nodes as Z
 
 def json_dumps(n):
     return json.dumps(n.dump())
 
 def json_loads(s):
-    return znode.load(json.loads(s))
+    return Z.load(json.loads(s))
 
 class znode_test1(unittest.TestCase):
 
@@ -35,7 +36,7 @@ class znode_test1(unittest.TestCase):
 
 
     def test0(self):    
-        from znode import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋlist_literal
+        from Z import ŋintegers, ŋint, ŋtuple, ŋp_array, ŋlist_literal
 
         n = ŋtuple()
         x = n.eval()
@@ -58,7 +59,7 @@ class znode_test1(unittest.TestCase):
         n2 = n.index[1:4]
         self.assertEqual(n2.eval(), (2,3))
         n2 = n.index[1:4]
-        print(n2)
+        #print(n2)
         self.reproduce(n2)
 
         n3 = n2.index[-1]

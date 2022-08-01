@@ -1,6 +1,6 @@
 import numpy as np
 
-from .node__ import node____, node_literal__, node__, metaclass_node_apply__
+from znode.core.node__ import node____, node_literal__, node__, metaclass_node_apply__
 
 def in_node____(x):
     setattr(node____, x.__name__, x)

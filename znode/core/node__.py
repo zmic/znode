@@ -299,7 +299,7 @@ def def_metaclass_node_apply(container, container_name=None):
                         args = cls.eval_symbolic_packargs(args, kwargs)
                         r = '{}.{}({})'.format(container_name, name, args)
                         return r                    
-                t.eval_symbolic____ = eval_symbolic____
+                    t.eval_symbolic____ = eval_symbolic____
             return t
     return metaclass_node_apply__
 #-------------------------------------------------------    

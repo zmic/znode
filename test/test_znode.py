@@ -2,13 +2,16 @@ import unittest
 import json
 import numpy as np
 import znode
+import ast
 
 
 def json_dumps(n):
-    return json.dumps(n.dump())
+    #return json.dumps(n.dump())
+    return repr(n.dump())
 
 def json_loads(s):
-    return znode.load(json.loads(s))
+    #return znode.load(json.loads(s))
+    return znode.load(ast.literal_eval(s))
 
 class znode_test1(unittest.TestCase):
 
@@ -226,7 +229,7 @@ class znode_test1(unittest.TestCase):
 
     def test4(self):    
         from znode import ŋr_integers, ŋr_default_rng, ŋint, ŋtuple, ŋr_integers
-        from znode import ŋp_transpose, ŋp_indices, ŋr_normal_int
+        from znode import ŋp_transpose, ŋp_indices, ŋr_normal_int, ŋp_int64
         
         nrnd2 = ŋr_default_rng(12)
         n = ŋr_integers(nrnd2, 0, 100)            
@@ -248,8 +251,13 @@ class znode_test1(unittest.TestCase):
         rs = ŋr_default_rng(4)
         a = ŋr_integers(rs, 0, 10, dtype=np.int32)
         self.reproduce(a)
+        i = np.int64(33333333333)
+        i = i*i
+        n = ŋp_int64(i)
+        n = n+n
+        self.reproduce(n)
     
-    def test4(self):
+    def test5(self):
         from znode import ŋr_default_rng, ŋr_exponential, ŋp_array, ŋtuple, ŋlist, ŋp_array_literal
         n = ŋr_exponential(ŋr_default_rng(), 1e20, (2,2,2))
         r = n.eval()

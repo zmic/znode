@@ -62,6 +62,8 @@ class node____(tuple, metaclass = metaclass_node):
             return cls.ŋbool(a)
         if isinstance(a, int):
             return cls.ŋint(a)
+        if isinstance(a, np.int64):
+            return cls.ŋp_int64(a)
         if isinstance(a, float):
             return cls.ŋfloat(a)
         if isinstance(a, complex):

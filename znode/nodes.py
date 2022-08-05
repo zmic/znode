@@ -20,6 +20,10 @@ class ŋint(node_literal__):
     pass
 
 @in_node____
+class ŋp_int64(node_literal__):
+    pass
+
+@in_node____
 class ŋfloat(node_literal__):
     pass
 

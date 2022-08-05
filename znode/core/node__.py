@@ -1,5 +1,6 @@
 import numpy as np
 from collections import defaultdict
+np.set_printoptions(precision=None)
 
 def dump____(L, D, n):
     nid = id(n)
@@ -69,6 +70,10 @@ class node____(tuple, metaclass = metaclass_node):
             return cls.ŋstr(a)
         if isinstance(a, tuple):
             return cls.ŋtuple(*a)
+        if isinstance(a, list):
+            return cls.ŋlist(*a)            
+        if isinstance(a, np.ndarray):
+            return cls.ŋp_array(*a)
         if isinstance(a, type):
             if np.issubdtype(a, np.number):
                 return cls.ŋp_ndtype(a)

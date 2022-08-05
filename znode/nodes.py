@@ -43,9 +43,18 @@ class ŋlist_literal(node_literal__):
         t = node_literal__.__new__(cls, items)
         return t  
 
+class ŋp_array_literal(node_literal__):
+    pass
+
 #-------------------------------------------------------  
 @in_node____
 class ŋtuple(node__):
+    @staticmethod
+    def eval__(*args):
+        return args
+
+@in_node____
+class ŋlist(node__):
     @staticmethod
     def eval__(*args):
         return args
@@ -130,6 +139,9 @@ class ŋr_standard_normal(node_random_samples__, metaclass=metaclass_node_apply_
 class ŋr_normal(node_random_samples__, metaclass=metaclass_node_apply__):
     pass
 
+class ŋr_exponential(node_random_samples__, metaclass=metaclass_node_apply__):
+    pass
+
 class ŋr_normal_int(node_random_samples__):
     @staticmethod
     def eval__(rng, loc=0.0, scale=1.0, size=None):
@@ -175,17 +187,17 @@ class node_numpy__(node__):
     def slice_add(self):
         return node_numpy__.slicer_inplace_operation__((ŋp_inplace_add, self))
     
-
-
-
-
+@in_node____
 class ŋp_array(node_numpy__):
     @classmethod
     def ŋtuple(cls, *args):
         return ŋlist_literal(args)
+    @classmethod
+    def ŋlist(cls, *args):
+        return ŋlist_literal(args)
     @staticmethod
-    def eval__(*args):        
-        return np.array(*args)
+    def eval__(*args, **kwargs):        
+        return np.array(*args, **kwargs)
 
 class ŋp_slice(node_numpy__):
     @staticmethod
@@ -194,24 +206,7 @@ class ŋp_slice(node_numpy__):
     def eval_symbolic____(cls, o, *args, **kwargs):
         args = cls.eval_symbolic_packargs(args, kwargs)
         r = '{}[{}]'.format(o, args)
-        return r   
-
-class node_numpy_metaclass__(type):
-    def __new__(cls, name, bases, attr):
-        cls = type(node_numpy__)
-        t = cls.__new__(cls, name, (node_numpy__,), attr)
-        name = name[3:]
-        f = getattr(np, name)
-        def eval__(s, *args, **kwargs):
-            return f(*args, **kwargs)
-        t.eval__ = eval__
-        if not 'eval_symbolic____' in attr:
-            def eval_symbolic____(cls, *args, **kwargs):
-                args = cls.eval_symbolic_packargs(args, kwargs)
-                r = 'np.{}({})'.format(name, args)
-                return r                    
-            t.eval_symbolic____ = eval_symbolic____
-        return t        
+        return r      
 
 node_numpy_metaclass__ = def_metaclass_node_apply(np)
 

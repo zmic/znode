@@ -7,7 +7,7 @@ def dump____(L, D, n):
     if nid in D:
         return D[nid]
     if isinstance(n, node_literal__):
-        args = [n[0][0]]
+        args = [n[0]]
     elif isinstance(n, node__):
         args = [dump____(L, D, x) for x in n[:-1]]
     r = len(L)
@@ -26,7 +26,7 @@ class metaclass_node(type):
             node_dict___[name] = t
         return t
 
-class node____(tuple, metaclass = metaclass_node):
+class node____(list, metaclass = metaclass_node):
     def dump(self):
         L = []
         D = {}
@@ -87,7 +87,10 @@ class node____(tuple, metaclass = metaclass_node):
         
     @property
     def r(self):
-        return self[-1][0]
+        return self[-1]
+
+    def result_ok(self):
+        return not isinstance(self[-1], NODE_RESULT_STATE)
 
     def __mul__(self, other):
         return self.ŋp_multiply(self, other)   
@@ -161,14 +164,18 @@ class node____(tuple, metaclass = metaclass_node):
 load = node____.load
 #-------------------------------------------------------    
 class node_literal__(node____):
-    def  __new__(cls, v):
-        t = super().__new__(cls, ((v,),))
-        return t
+    def __init__(self, v):
+        super().__init__(self)
+        self.append(v)
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__,repr(self[0][0]))        
+        return '{}({})'.format(self.__class__.__name__,repr(self[0]))        
     def reset(self):
         pass
-#-------------------------------------------------------    
+#-------------------------------------------------------  
+class NODE_RESULT_STATE: pass
+class NO_RESULT(NODE_RESULT_STATE) : pass
+class ERROR(NODE_RESULT_STATE) : pass
+
 class node__(node____):
     symbolic_name = None
     symbolic_standalone = None
@@ -177,44 +184,49 @@ class node__(node____):
         def  __new__(cls, k, v):
             t = super().__new__(cls, (k, v))
             return t        
-    def  __new__(cls, *args, **kwargs):
-        args = [cls.wrap_arg(x) for x in args]
-        args += [cls.ŋkwarg(x, cls.wrap_arg(y)) for x, y in kwargs.items()]
-        t = super().__new__(cls, args+[list()])
-        return t
+    def  __init__(self, *args, **kwargs):
+        args = [self.wrap_arg(x) for x in args]
+        if kwargs:
+            args += [self.ŋkwarg(x, self.wrap_arg(y)) for x, y in kwargs.items()]
+        args.append(NO_RESULT)
+        list.__init__(self, args)
     def __repr__(self):
         a = self[:-1]
-        if len(a) == 1:
-           return '{}({})'.format(self.__class__.__name__,repr(self[0]))        
-        else:
-            return self.__class__.__name__ + repr(a) 
+        return self.__class__.__name__ + repr(a) 
     def eval_debug(self):
         self.debug_info = []
-        return self.eval_debug_(0, self.debug_info)
+        self.eval_debug_(0, self.debug_info)
+        return self[-1]
     def eval_debug_(self, depth, debug_info):
-        if self[-1]:
-            raise RuntimeError("Node already evaluated")
         A = self[:-1]
         for i in A:
-            if not i[-1]:
+            if i[-1] is NO_RESULT:
                 i.eval_debug_(depth + 1, debug_info)
+            elif i[-1] is ERROR:
+                self[-1] = ERROR
+                return
         debug_info.append((depth,str(self)[:120]))
-        args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwargx)]
-        kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwargx)}
+        args = [i[-1] for i in A if not isinstance(i[-1], node__.kwargx)]
+        kwargs = {i[-1][0]:i[-1][1] for i in A if isinstance(i[-1], node__.kwargx)}
         r = self.eval__(*args, **kwargs)
-        self[-1].append(r)
-        return r                   
+        self[-1] = r                
     def eval(self):
-        if self[-1]:
-            raise RuntimeError("Node already evaluated")
         A = self[:-1]
+        args = []
+        kwargs = {}
         for i in A:
-            if not i[-1]:
-                i.eval()
-        args = [i[-1][0] for i in A if not isinstance(i[-1][0], node__.kwargx)]
-        kwargs = {i[-1][0][0]:i[-1][0][1] for i in A if isinstance(i[-1][0], node__.kwargx)}
+            v = i[-1]
+            if v is NO_RESULT:
+                v = i.eval()
+            elif v is ERROR:
+                self[-1] = ERROR
+                return 
+            if isinstance(v, node__.kwargx):
+                kwargs[v[0]] = v[1]
+            else:
+                args.append(v)
         r = self.eval__(*args, **kwargs)
-        self[-1].append(r)
+        self[-1] = r
         return r
     @staticmethod
     def eval_symbolic_packargs(args, kwargs):
@@ -270,7 +282,7 @@ class node__(node____):
     def reset(self):
         for x in self[:-1]:
             x.reset()
-        self[-1].clear()
+        self[-1] = NO_RESULT
            
 
 #-------------------------------------------------------    

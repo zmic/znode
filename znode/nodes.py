@@ -1,6 +1,7 @@
 import numpy as np
 
 from znode.core.node__ import node____, node_literal__, node__, metaclass_node_apply__, def_metaclass_node_apply
+from znode.core.node__ import yield_once
 
 def in_node____(x):
     setattr(node____, x.__name__, x)
@@ -40,12 +41,12 @@ def tuples2lists__(t):
 
 # this class is only used for ŋp_array constructor
 class ŋlist_literal(node_literal__):
-    def  __new__(cls, items):
+    def  __init__(self, items):
         # items can be single number since np.array constructor allows this
         if isinstance(items, (list, tuple)):
             items = tuples2lists__(items)
-        t = node_literal__.__new__(cls, items)
-        return t  
+        node_literal__.__init__(self, items)
+
 
 class ŋp_array_literal(node_literal__):
     pass
@@ -155,11 +156,10 @@ class ŋr_normal_int(node_random_samples__):
 
 @in_node____
 class ŋp_ndtype(node__):
-    def  __new__(cls, v):
+    def  __init__(self, v):
         if isinstance(v, type):
             v = v.__name__
-        t = node__.__new__(cls, v)
-        return t   
+        node__.__init__(self, v)
     @staticmethod
     def eval__(s):
         return getattr(np, s)
@@ -464,9 +464,10 @@ node_wrap_function(node__, slice, in_node____ = True)
 
 #-------------------------------------------------------    
 ŋf_load = node____.load
+ŋf_yield_once = yield_once
+
 __all__ = []
 for x, y in list(globals().items()):
-    if isinstance(y, type):
-        if y.__name__[0] == 'ŋ':
-            __all__.append(x)
+    if x[0] == 'ŋ':
+        __all__.append(x)
 

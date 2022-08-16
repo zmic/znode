@@ -105,7 +105,19 @@ class ŋdiv(node__):
     @staticmethod
     def eval__(x, y):
         return x / y
-            
+
+@in_node____
+class ŋneg(node__):
+    @staticmethod
+    def eval__(x):
+        return -x
+
+@in_node____
+class ŋpow(node__):
+    @staticmethod
+    def eval__(x, y):
+        return x**y
+
 #-------------------------------------------------------    
 np_random_metaclass = def_metaclass_node_apply(np.random)
 class node_np_random__(node__, metaclass=np_random_metaclass):

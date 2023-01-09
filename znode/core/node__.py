@@ -54,6 +54,7 @@ class node____(list, metaclass = metaclass_node):
     def index(self):
         return node____.indexer((self,))
 
+    wrap_arg_extensions = []
     @classmethod
     def wrap_arg(cls, a):
         if isinstance(a, node____):
@@ -83,6 +84,9 @@ class node____(list, metaclass = metaclass_node):
             return cls.ŋslice(a.start, a.stop, a.step)
         if a is None:
             return cls.ŋNone(a)
+        for w in cls.wrap_arg_extensions:
+            if t := w(a):
+                return t
         raise TypeError("Can't handle type " + type(a).__name__)
         
     @property

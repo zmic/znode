@@ -82,6 +82,17 @@ class ŋkwarg(node__):
 
 #-------------------------------------------------------  
   
+class ŋvariable(node__):
+    def set(self, value):
+        self[1] = self.wrap_arg(value)
+
+    @staticmethod
+    def eval__(x, y):
+        # x is the name of the variable
+        return y
+    
+#-------------------------------------------------------  
+
 @in_node____
 class ŋadd(node__):
     @staticmethod

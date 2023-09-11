@@ -268,7 +268,7 @@ class znode_test1(unittest.TestCase):
         n = ŋtuple((1,2,3))
         self.assertEqual(str(n), "ŋtuple[ŋtuple[ŋint(1), ŋint(2), ŋint(3)]]")
         n = ŋtuple(r)
-        n = ŋp_array_literal(r.astype(np.float128))
+        n = ŋp_array_literal(r.astype(np.longdouble))
         n = ŋp_array([[1,2,3],[7,8,9]], dtype=np.uint8)
         self.assertEqual(n.eval().dtype, np.uint8)
         self.reproduce(n)
@@ -278,8 +278,7 @@ class znode_test1(unittest.TestCase):
         n = ŋp_cos(ŋp_ones((2,2), dtype=np.float64))
         i = np.float64(.6)
         n = n*i
-        print(n)
-
+        #print(n)
 
 if __name__ == '__main__':
     unittest.main()

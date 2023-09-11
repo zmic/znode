@@ -25,6 +25,8 @@ class metaclass_node(type):
                 raise TypeError("Node type '{}' already exists".format(name))
             node_dict___[name] = t
         return t
+    def __getitem__(cls, args):
+        return cls(*args)   
 
 class node____(list, metaclass = metaclass_node):
     def dump(self):
@@ -168,7 +170,7 @@ class node_literal__(node____):
         super().__init__(self)
         self.append(v)
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__,repr(self[0]))        
+        return '{}({})'.format(self.__class__.__name__,repr(self[0]))   
     def reset(self):
         pass
 #-------------------------------------------------------  
@@ -192,7 +194,7 @@ class node__(node____):
         list.__init__(self, args)
     def __repr__(self):
         a = self[:-1]
-        return self.__class__.__name__ + repr(a) 
+        return self.__class__.__name__ + repr(a)   
     def eval_debug(self):
         self.debug_info = []
         self.eval_debug_(0, self.debug_info)

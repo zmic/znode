@@ -118,6 +118,16 @@ class ŋpow(node__):
     def eval__(x, y):
         return x**y
 
+class ŋpoly(node__):
+    @staticmethod
+    def eval__(x_, coeffs):
+        r = coeffs[0]
+        x = x_
+        for c in coeffs[1:]:
+            r += c * x
+            x = x * x_
+        return r
+
 #-------------------------------------------------------    
 np_random_metaclass = def_metaclass_node_apply(np.random)
 class node_np_random__(node__, metaclass=np_random_metaclass):

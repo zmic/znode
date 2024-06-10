@@ -264,6 +264,14 @@ class ŋp_inplace_add(node_numpy__):
     def eval__(a, b, i):  
         b[...] += i
         return a
+    
+class ŋp_interleaf(node_numpy__):
+    @staticmethod
+    def eval__(*U):  
+        R = np.empty((*U[0].shape,len(U)))
+        for i in range(len(U)):
+            R[...,i] = U[i]
+        return R    
 
 @in_node____
 class ŋp_astype(node_numpy__):
@@ -405,6 +413,10 @@ class ŋp_exp(node_numpy__, metaclass=node_numpy_metaclass__):
 class ŋp_log(node_numpy__, metaclass=node_numpy_metaclass__):
     pass
     
+@in_node____
+class ŋp_power(node_numpy__, metaclass=node_numpy_metaclass__):
+    pass
+
 #------------------------------------------------------------
 
 class ŋp_fmod(node_numpy__, metaclass=node_numpy_metaclass__):
@@ -481,7 +493,10 @@ class ŋp_zeros(node_numpy__, metaclass=node_numpy_metaclass__):
 
 class ŋp_ones(node_numpy__, metaclass=node_numpy_metaclass__):
     pass
+
+
 #-------------------------------------------------------    
+
 def node_wrap_function(baseclass, func, in_node____ = False):
     name = 'ŋ' + func.__name__
     t = type.__new__(type, name, (baseclass,), {})

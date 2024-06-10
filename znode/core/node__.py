@@ -121,7 +121,7 @@ class node____(list, metaclass = metaclass_node):
         return self.ŋp_mod(self, other)   
         
     def __neg__(self):
-        return self.ŋp_negative(self, other)   
+        return self.ŋp_negative(self)   
 
     def __eq__(self, other):
         return self.ŋp_equal(self, other)   

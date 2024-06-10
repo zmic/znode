@@ -11,7 +11,7 @@ Python 3.3 added implicit namespace packages from PEP 420. All that is required 
 setup(
     name='znode',
     version='0.1',
-    packages=['znode'],
+    packages=['znode', 'znode.core'],
     python_requires='>=3.3',
     description='',
     long_description = README_TEXT,    

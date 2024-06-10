@@ -251,7 +251,7 @@ class znode_test1(unittest.TestCase):
         rs = ŋr_default_rng(4)
         a = ŋr_integers(rs, 0, 10, dtype=np.int32)
         self.reproduce(a)
-        i = np.int64(33333333333)
+        i = np.int64(3333333333)
         i = i*i
         n = ŋp_int64(i)
         n = n+n
@@ -278,7 +278,13 @@ class znode_test1(unittest.TestCase):
         n = ŋp_cos(ŋp_ones((2,2), dtype=np.float64))
         i = np.float64(.6)
         n = n*i
-        #print(n)
+
+    def test7(self):
+        from znode import ŋvariable, ŋp_cos
+        n = ŋvariable('n',1)
+        n2 = n+ŋp_cos(0)
+        n.eval()
+
 
 if __name__ == '__main__':
     unittest.main()
